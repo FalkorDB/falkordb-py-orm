@@ -2,9 +2,10 @@
 
 > **Object-Graph Mapping for FalkorDB with Spring Data-inspired patterns**
 
-[![Python Version](https://img.shields.io/badge/Python-3.8+-brightgreen.svg)](https://www.python.org/)
+[![Python Version](https://img.shields.io/badge/Python-3.9+-brightgreen.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![FalkorDB](https://img.shields.io/badge/FalkorDB-Compatible-red.svg)](https://falkordb.com)
+[![PyPI](https://img.shields.io/pypi/v/falkordb-orm.svg)](https://pypi.org/project/falkordb-orm/)
 
 FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping for [FalkorDB](https://falkordb.com), enabling developers to work with graph databases using familiar ORM patterns inspired by Spring Data.
 

@@ -1,19 +1,19 @@
 [tool.poetry]
 name = "falkordb-orm"
-version = "0.1.0"
+version = "1.0.0"
 description = "Object-Graph Mapping for FalkorDB with Spring Data-inspired patterns"
-authors = ["FalkorDB Team"]
+authors = ["FalkorDB Team <hello@falkordb.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/FalkorDB/falkordb-py-orm"
+homepage = "https://falkordb.com"
 repository = "https://github.com/FalkorDB/falkordb-py-orm"
+documentation = "https://github.com/FalkorDB/falkordb-py-orm#documentation"
 keywords = ["falkordb", "orm", "graph", "database", "ogm"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -24,7 +24,7 @@ classifiers = [
 packages = [{include = "falkordb_orm"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 falkordb = "^1.0.0"
 typing-extensions = "^4.0"
 
@@ -47,14 +47,14 @@ python_functions = "test_*"
 
 [tool.black]
 line-length = 100
-target-version = ['py38']
+target-version = ['py39']
 
 [tool.ruff]
 line-length = 100
-target-version = "py38"
+target-version = "py39"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false
