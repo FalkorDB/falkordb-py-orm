@@ -24,15 +24,17 @@ from .exceptions import (
 from .types import TypeConverter, register_converter
 
 # Metadata (for advanced usage)
-from .metadata import (
-    EntityMetadata, PropertyMetadata, RelationshipMetadata,
-    get_entity_metadata
-)
+from .metadata import EntityMetadata, PropertyMetadata, RelationshipMetadata, get_entity_metadata
 
 # Query parser (for advanced usage)
 from .query_parser import (
-    QueryParser, QuerySpec, Condition, OrderClause,
-    Operation, Operator, LogicalOperator
+    QueryParser,
+    QuerySpec,
+    Condition,
+    OrderClause,
+    Operation,
+    Operator,
+    LogicalOperator,
 )
 
 __all__ = [
