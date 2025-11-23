@@ -51,7 +51,9 @@ def test_build_match_by_id_query_with_auto_id():
     cypher, params = builder.build_match_by_id_query(metadata, 123)
 
     assert "MATCH" in cypher
-    assert "id(n)" in cypher  # Uses internal ID function
+    assert "AutoPerson" in cypher
+    # With generated_id(), uses internal id(n) function in WHERE clause
+    assert "WHERE id(n)" in cypher or "id(n) =" in cypher
     assert params["id"] == 123
 
 

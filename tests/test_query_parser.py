@@ -293,9 +293,11 @@ def test_parse_invalid_method_name():
 def test_parse_find_all_order_by():
     """Test parsing find_all with order_by."""
     parser = QueryParser()
-    spec = parser.parse_method_name("find_order_by_name_asc")
+    # Use find_all_order_by pattern instead of find_order_by
+    spec = parser.parse_method_name("find_all_order_by_name_asc")
 
     assert spec.operation == Operation.FIND
     assert len(spec.conditions) == 0
     assert len(spec.ordering) == 1
     assert spec.ordering[0].property_name == "name"
+    assert spec.ordering[0].direction == "ASC"

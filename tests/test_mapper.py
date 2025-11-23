@@ -68,8 +68,13 @@ def test_map_to_cypher_create():
 
     assert "CREATE" in cypher
     assert "Person" in cypher
-    assert "props" in params
-    assert params["props"]["name"] == "Alice"
+    # Parameters use prop_ prefix, not props dict
+    assert "prop_name" in params
+    assert params["prop_name"] == "Alice"
+    assert "prop_email" in params
+    assert params["prop_email"] == "alice@example.com"
+    assert "prop_age" in params
+    assert params["prop_age"] == 30
 
 
 def test_map_to_cypher_merge():
