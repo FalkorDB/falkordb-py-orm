@@ -154,7 +154,8 @@ class QueryParser:
         ordering_part = parts[1] if len(parts) > 1 else None
 
         # Parse conditions
-        if not conditions_part or conditions_part == "":
+        # Handle special case: find_all without conditions
+        if not conditions_part or conditions_part == "" or conditions_part == "all":
             conditions = []
             logical_op = LogicalOperator.AND
         else:
