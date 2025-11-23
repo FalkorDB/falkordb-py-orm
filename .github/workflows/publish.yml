@@ -3,11 +3,18 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish to PyPI (true/false)'
+        required: false
+        default: 'false'
 
 jobs:
-  publish:
+  build:
+    name: Build distribution packages
     runs-on: ubuntu-latest
-
+    
     steps:
     - uses: actions/checkout@v4
 
@@ -24,16 +31,35 @@ jobs:
     - name: Build package
       run: poetry build
 
-    - name: Publish to PyPI
-      env:
-        POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_API_TOKEN || secrets.PYPI_TOKEN }}
-      run: poetry publish
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
 
-    - name: Create GitHub Release Assets
+  publish:
+    name: Publish to PyPI
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || github.event.inputs.publish == 'true'
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      contents: write
+    
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+    - name: Upload release assets
       uses: softprops/action-gh-release@v1
+      if: github.event_name == 'release'
       with:
         files: |
           dist/*.whl
           dist/*.tar.gz
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
