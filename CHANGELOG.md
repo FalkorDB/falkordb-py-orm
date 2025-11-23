@@ -5,18 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2024-11-23
 
-### Phase 6 - Polish & Documentation
-#### Added
-- Comprehensive exception handling with contextual error messages
-- Complete API reference documentation for decorators, repository, query methods
+### Initial Release 🎉
+
+First production-ready release of FalkorDB Python ORM with comprehensive features for object-graph mapping.
+
+#### Core Features
+- **Entity Mapping**: `@node` decorator for defining entities with full type safety
+- **Repository Pattern**: Generic `Repository[T]` with type-safe CRUD operations
+- **Query Derivation**: Automatic query generation from method names (e.g., `find_by_name_and_age_greater_than()`)
+- **Relationships**: Lazy/eager loading, cascade operations, bidirectional support
+- **Custom Queries**: `@query` decorator for custom Cypher with parameter binding
+- **Async Support**: Full async/await with `AsyncRepository` for modern Python applications
+- **Type System**: Built-in converters for common Python types with extensibility
+
+#### Polish & Documentation
+- Complete API reference documentation for all decorators and methods
 - Migration guide from raw FalkorDB client to ORM
-- CI/CD workflows for testing, linting, and publishing
-- Package distribution files (LICENSE, CHANGELOG, CONTRIBUTING)
-- Enhanced error types: `ValidationException`, `RelationshipException`, `ConfigurationException`, `TransactionException`
+- CI/CD workflows (GitHub Actions) for testing, linting, and publishing
+- Enhanced exception handling with contextual error messages
+- Comprehensive examples for all features
+- Memory optimization with interned string support (`@interned` decorator)
 
-## [0.1.0] - 2024-11-23
+#### Breaking Changes
+- Python 3.8 is no longer supported (EOL October 2024). Minimum version is now Python 3.9
+
+## [0.1.0-alpha] - 2024-11-23
 
 ### Phase 5 - Async Support
 #### Added
@@ -151,7 +166,7 @@ falkordb-py-orm/
 
 ## Compatibility
 
-- Python: 3.8+
+- Python: 3.9+ (3.8 reached EOL in October 2024)
 - FalkorDB: 1.0.0+
 - Redis (for FalkorDB): 6.0+
 
