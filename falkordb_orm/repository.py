@@ -75,10 +75,10 @@ class Repository(Generic[T]):
 
             result = self.graph.query(cypher, params)
 
-            # Extract the returned node and ID
+            # Extract the returned node ID
             if result.result_set:
                 record = result.result_set[0]
-                node = record[0]  # 'n'
+                # node = record[0]  # 'n' - not used
                 node_id = record[1]  # 'node_id'
 
                 # Update entity's ID if it was auto-generated

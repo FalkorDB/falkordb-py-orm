@@ -1,6 +1,6 @@
 """Query builder for generating Cypher queries."""
 
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, Dict, List, Type
 
 from .metadata import EntityMetadata, RelationshipMetadata, get_entity_metadata
 from .query_parser import QuerySpec, Condition, OrderClause, Operation, Operator, LogicalOperator

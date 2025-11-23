@@ -1,7 +1,6 @@
 """Tests for query builder module."""
 
 from typing import Optional
-import pytest
 
 from falkordb_orm.decorators import node, generated_id
 from falkordb_orm.query_builder import QueryBuilder

@@ -1,7 +1,7 @@
 """Custom query decorator for user-defined Cypher queries."""
 
 import inspect
-from typing import Any, Callable, Optional, Type, TypeVar, get_type_hints
+from typing import Any, Callable, Optional, Type, TypeVar
 
 T = TypeVar("T")
 

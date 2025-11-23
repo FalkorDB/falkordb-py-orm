@@ -2,7 +2,7 @@
 
 import pytest
 
-from falkordb_orm.query_parser import QueryParser, QuerySpec, Operation, Operator, LogicalOperator
+from falkordb_orm.query_parser import QueryParser, Operation, Operator, LogicalOperator
 from falkordb_orm.exceptions import QueryException
 
 

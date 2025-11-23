@@ -1,7 +1,6 @@
 """Tests for decorators module."""
 
 from typing import Optional
-import pytest
 
 from falkordb_orm.decorators import node, property, generated_id
 from falkordb_orm.metadata import get_entity_metadata

@@ -1,14 +1,11 @@
 """Tests for lazy loading of relationships."""
 
-import pytest
 from typing import List, Optional
-from unittest.mock import Mock, MagicMock
+from unittest.mock import Mock
 
 from falkordb_orm.decorators import node, generated_id, relationship
 from falkordb_orm.relationships import LazyList, LazySingle, create_lazy_proxy
-from falkordb_orm.metadata import RelationshipMetadata, get_entity_metadata
-from falkordb_orm.mapper import EntityMapper
-from falkordb_orm.query_builder import QueryBuilder
+from falkordb_orm.metadata import RelationshipMetadata
 
 
 @node("Person")

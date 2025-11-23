@@ -109,7 +109,6 @@ class TypeRegistry:
 
     def _register_defaults(self) -> None:
         """Register default type converters."""
-        identity = IdentityConverter()
         self._converters[str] = StrConverter()
         self._converters[int] = IntConverter()
         self._converters[float] = FloatConverter()

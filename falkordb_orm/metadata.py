@@ -1,7 +1,7 @@
 """Metadata structures for entity mapping."""
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Type, TYPE_CHECKING
+from typing import Callable, List, Optional, Type, TYPE_CHECKING
 
 if TYPE_CHECKING:
     pass  # For forward reference resolution

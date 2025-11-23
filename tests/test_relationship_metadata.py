@@ -4,7 +4,7 @@ from typing import List, Optional
 import pytest
 
 from falkordb_orm.decorators import node, generated_id, relationship
-from falkordb_orm.metadata import get_entity_metadata, RelationshipMetadata
+from falkordb_orm.metadata import get_entity_metadata
 
 
 def test_one_to_many_relationship_with_forward_reference():

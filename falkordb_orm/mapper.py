@@ -1,9 +1,9 @@
 """Entity mapper for converting between Python objects and graph structures."""
 
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar
+from typing import Any, Dict, List, Tuple, Type, TypeVar
 
 from .exceptions import InvalidEntityException, MappingException
-from .metadata import EntityMetadata, PropertyMetadata, get_entity_metadata
+from .metadata import EntityMetadata, get_entity_metadata
 from .types import get_type_registry
 
 T = TypeVar("T")

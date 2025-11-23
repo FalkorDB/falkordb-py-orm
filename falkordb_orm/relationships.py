@@ -2,7 +2,7 @@
 
 from typing import Any, Generic, Iterator, List, Optional, Type, TypeVar
 
-from .metadata import RelationshipMetadata, get_entity_metadata
+from .metadata import RelationshipMetadata
 
 T = TypeVar("T")
 
