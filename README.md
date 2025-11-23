@@ -10,41 +10,32 @@ FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping fo
 
 ## 🎯 Project Status
 
-**Phase 6 Complete! ✅ Production Ready!** The ORM is now fully documented, tested, and ready for PyPI release.
-
-- ✅ Phase 1: Foundation (Core entity mapping and basic CRUD) - **COMPLETE**
-- ✅ Phase 2: Query Derivation (Automatic query generation) - **COMPLETE**
-- ✅ Phase 3: Relationships (Lazy/eager loading, cascade operations) - **COMPLETE**
-- ✅ Phase 4: Advanced Features (Custom queries, aggregations) - **COMPLETE**
-- ✅ Phase 5: Async Support (AsyncRepository with full async/await) - **COMPLETE**
-- ✅ Phase 6: Polish & Documentation (Production-ready, CI/CD, comprehensive docs) - **COMPLETE**
-
-See [PHASE6_COMPLETE.md](PHASE6_COMPLETE.md) for the latest updates, including comprehensive API documentation, migration guide, and CI/CD setup. Check [QUICKSTART.md](QUICKSTART.md) to get started.
-
-**Phase 6** adds production-ready features: comprehensive API docs, migration guide from raw FalkorDB client, CI/CD workflows, enhanced exception handling, and all package distribution files.
+**Production Ready! ✅** The FalkorDB Python ORM is fully implemented, tested, and documented.
 
 ## 🚀 Features
 
-### ✅ Implemented
+### Core Capabilities
 
-**Phase 1 - Foundation:**
-- **🏷️ Decorator-based Entity Mapping**: Use `@node` and `property` decorators
-- **📦 Repository Pattern**: CRUD operations with `Repository[T]`
+- **🏷️ Decorator-based Entity Mapping**: Use `@node` and `property` decorators for intuitive object-graph mapping
+- **📦 Repository Pattern**: Complete CRUD operations with type-safe `Repository[T]`
 - **🔑 ID Management**: Auto-generated or manual IDs with `generated_id()`
-- **🔄 Type Conversion**: Built-in converters for common types
-- **🎯 Multiple Labels**: Support for multiple node labels
-- **🎨 Type Safety**: Full type hints and generic repositories
+- **🔄 Type Conversion**: Built-in converters for common Python types
+- **🎯 Multiple Labels**: Support for multiple node labels per entity
+- **🎨 Type Safety**: Full type hints and generic repositories for IDE support
 
-**Phase 2 - Query Derivation:**
+### Query Features
+
 - **🔍 Derived Query Methods**: Auto-generate queries from method names (e.g., `find_by_name()`, `count_by_age_greater_than()`)
-- **📊 Comparison Operators**: Support for 14 operators (equals, greater_than, less_than, between, in, etc.)
+- **📊 Comparison Operators**: 14+ operators (equals, greater_than, less_than, between, in, etc.)
 - **🔗 Logical Operators**: AND/OR combinations in queries
 - **📝 String Operations**: CONTAINS, STARTS WITH, ENDS WITH, regex patterns
-- **📊 Sorting**: Single and multiple field ORDER BY
-- **🎯 Limiting**: first/top_N result limiting
+- **📊 Sorting & Limiting**: ORDER BY multiple fields, first/top_N result limiting
 - **⚡ Query Caching**: Automatic QuerySpec caching for performance
+- **📝 Custom Cypher Queries**: `@query` decorator with parameter binding
+- **📊 Aggregation Methods**: Built-in `sum()`, `avg()`, `min()`, `max()` functions
 
-**Phase 3 - Relationships:**
+### Relationships
+
 - **🔗 Relationship Declaration**: `relationship()` decorator with full type support
 - **💤 Lazy Loading**: Relationships loaded on-demand with automatic caching
 - **⚡ Eager Loading**: Solve N+1 queries with `fetch=['rel1', 'rel2']` parameter
@@ -53,25 +44,19 @@ See [PHASE6_COMPLETE.md](PHASE6_COMPLETE.md) for the latest updates, including c
 - **🔙 Reverse Relationships**: `direction='INCOMING'` for inverse traversal
 - **🔁 Circular Reference Handling**: Safe handling of circular relationships
 
-**Phase 4 - Advanced Features:**
-- **📝 Custom Cypher Queries**: `@query` decorator with parameter binding
-- **📊 Aggregation Methods**: Built-in `sum()`, `avg()`, `min()`, `max()` functions
-- **🎯 Type-Safe Results**: Automatic mapping of query results to entities
-- **🔧 Complex Patterns**: Support for WITH clauses, CTEs, and advanced Cypher
+### Async Support
 
-**Phase 5 - Async Support:**
 - **⚡ AsyncRepository**: Full async/await support for all CRUD operations
 - **🔄 Async Relationships**: Async lazy loading with `AsyncLazyList` and `AsyncLazySingle`
 - **📊 Async Derived Queries**: Auto-generated async query methods
 - **🌐 Framework Ready**: Perfect for FastAPI, aiohttp, and async Python applications
 
-**Phase 6 - Polish & Documentation:**
-- **📚 Comprehensive API Docs**: Complete reference for decorators, repository, and query methods
-- **🔄 Migration Guide**: Step-by-step guide from raw FalkorDB client to ORM
+### Production Features
+
+- **📚 Comprehensive Documentation**: Complete API reference and migration guides
 - **🧠 Enhanced Exceptions**: Contextual error messages with structured error information
-- **🚀 CI/CD Workflows**: Automated testing, linting, and PyPI publishing
-- **📦 Distribution Ready**: LICENSE, CHANGELOG, CONTRIBUTING, and complete package metadata
-- **💾 Interned Strings**: Memory optimization for repeated string values with `@interned` decorator
+- **🚀 CI/CD Workflows**: Automated testing, linting, and publishing
+- **💾 Memory Optimization**: Interned strings for repeated values with `@interned` decorator
 
 ### 📋 Future Enhancements (Optional)
 
@@ -223,26 +208,6 @@ class PersonRepository(Repository[Person]):
         pass
 ```
 
-### Session Management (Coming in Phase 4)
-
-```python
-from falkordb_orm import Session
-
-with Session(graph) as session:
-    # Add new entities
-    alice = Person(name="Alice", age=25)
-    bob = Person(name="Bob", age=30)
-    
-    session.add(alice)
-    session.add(bob)
-    
-    # Modify existing
-    existing = session.get(Person, 1)
-    existing.age = 26
-    
-    # All changes persisted on commit
-    session.commit()
-```
 
 ## 📋 Comparison with Current Approach
 
@@ -300,49 +265,17 @@ for person in adults:
     print(person.name)
 ```
 
-## 🗺️ Implementation Plan
-
-### Phase 1: Foundation (Week 1-2)
-- Core entity mapping with `@node` decorator
-- Basic property mapping
-- Simple `Repository` with CRUD operations
-- `save()` and `find_by_id()` methods
-
-### Phase 2: Query Derivation (Week 3-4)
-- Parse method names into Cypher queries
-- Support comparison operators (`greater_than`, `less_than`, etc.)
-- Support logical operators (`and`, `or`)
-- String operations (`containing`, `starting_with`, etc.)
-
-### Phase 3: Relationships (Week 5-6)
-- `@relationship` decorator
-- Relationship persistence (cascade)
-- Lazy loading with proxies
-- Eager loading with fetch hints
-
-### Phase 4: Advanced Features (Week 7-8)
-- `Session` with unit of work pattern
-- Identity map for entity tracking
-- `@query` decorator for custom Cypher
-- Pagination support
-
-### Phase 5: Async Support (Week 9)
-- `AsyncRepository` implementation
-- `AsyncSession` implementation
-- Async query methods
-
-### Phase 6: Polish & Documentation (Week 10)
-- Comprehensive documentation
-- Example projects
-- Performance optimization
-- Package publishing
 
 ## 📚 Documentation
 
-- [Design Document](DESIGN.md) - Comprehensive design and architecture
-- Getting Started Guide (Coming soon)
-- API Reference (Coming soon)
-- Examples (Coming soon)
+- **[Quick Start Guide](QUICKSTART.md)** - Get started in minutes
+- **[Design Document](DESIGN.md)** - Comprehensive design and architecture
+- **[API Reference](docs/api/)** - Complete API documentation
+  - [Decorators](docs/api/decorators.md) - `@node`, `property()`, `relationship()`
+  - [Repository](docs/api/repository.md) - `Repository` and `AsyncRepository`
+- **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Migrating from raw FalkorDB client
+- **[Examples](examples/)** - Complete working examples
+- **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
 
 ## 🤝 Comparison with Spring Data FalkorDB
 
@@ -375,13 +308,18 @@ This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/s
 - **Decorators**: For entity and query definition
 - **Generics**: For type-safe repositories
 
-## 📦 Planned Dependencies
+## 📦 Installation
 
-```toml
-[tool.poetry.dependencies]
-python = "^3.8"
-falkordb = "^1.2.0"
-typing-extensions = "^4.0"
+```bash
+pip install falkordb-orm
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/FalkorDB/falkordb-py-orm.git
+cd falkordb-py-orm
+pip install -e .
 ```
 
 ## 💡 Design Principles
@@ -392,31 +330,6 @@ typing-extensions = "^4.0"
 4. **Pythonic**: Follow Python idioms and best practices
 5. **Compatibility**: Work seamlessly with existing falkordb-py code
 
-## 🚀 Getting Started
-
-```bash
-# Clone and install
-git clone https://github.com/FalkorDB/falkordb-py-orm.git
-cd falkordb-py-orm
-pip install -e .
-
-# Quick start
-from falkordb import FalkorDB
-from falkordb_orm import node, Repository
-
-@node("Person")
-class Person:
-    id: Optional[int] = None
-    name: str
-    age: int
-
-db = FalkorDB(host='localhost', port=6379)
-graph = db.select_graph('mydb')
-repo = Repository(graph, Person)
-
-person = Person(name="Alice", age=25)
-saved = repo.save(person)
-```
 
 ## 📄 License
 
@@ -428,19 +341,12 @@ MIT License - See [LICENSE](LICENSE) file for details
 - Built on top of [falkordb-py](https://github.com/FalkorDB/falkordb-py)
 - Follows patterns from SQLAlchemy and Django ORM
 
-## 📞 Contact & Contributing
+## 🤝 Contributing
 
-Contributions and feedback are welcome!
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-- **Quick Start**: [QUICKSTART.md](QUICKSTART.md)
-- **Design Document**: [DESIGN.md](DESIGN.md)
-- **Phase 2 Complete**: [PHASE2_COMPLETE.md](PHASE2_COMPLETE.md)
-- **Phase 1 Complete**: [PHASE1_COMPLETE.md](PHASE1_COMPLETE.md)
+## 📦 Resources
+
 - **FalkorDB**: [falkordb.com](https://falkordb.com)
 - **Discord**: [FalkorDB Community](https://discord.gg/falkordb)
-
----
-
-**Status**: ✅ Phase 1, 2, 3, 4 & 5 Complete
-
-For implementation details, see phase completion documents: [PHASE4_COMPLETE.md](PHASE4_COMPLETE.md), [PHASE3_COMPLETE.md](PHASE3_COMPLETE.md), [PHASE2_COMPLETE.md](PHASE2_COMPLETE.md), and [PHASE1_COMPLETE.md](PHASE1_COMPLETE.md).
+- **GitHub**: [FalkorDB Organization](https://github.com/FalkorDB)
