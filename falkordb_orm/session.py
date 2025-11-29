@@ -1,7 +1,6 @@
 """Session management for transactional operations."""
 
 from typing import Any, Dict, Optional, Set, Tuple, Type, TypeVar
-from weakref import WeakValueDictionary
 import copy
 
 from .exceptions import EntityNotFoundException, QueryException
@@ -100,7 +99,7 @@ class Session:
             raise RuntimeError("Session is closed")
 
         # Check if already tracked
-        entity_id = id(entity)
+        id(entity)
         if entity in self._deleted:
             self._deleted.remove(entity)
             self._dirty.add(entity)
@@ -307,7 +306,7 @@ class Session:
                 if value is not None:
                     try:
                         state[prop.python_name] = copy.deepcopy(value)
-                    except:
+                    except Exception:
                         # If can't deep copy, store reference
                         state[prop.python_name] = value
 

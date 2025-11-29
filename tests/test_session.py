@@ -2,12 +2,12 @@
 
 import pytest
 from typing import Optional
-from unittest.mock import Mock, MagicMock
+from unittest.mock import Mock
 
 from falkordb_orm import node, property, generated_id
 from falkordb_orm.session import Session
 from falkordb_orm.async_session import AsyncSession
-from falkordb_orm.exceptions import QueryException, EntityNotFoundException
+from falkordb_orm.exceptions import QueryException
 
 
 @node("Person")

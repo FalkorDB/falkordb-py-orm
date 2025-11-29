@@ -106,7 +106,7 @@ def graph(db):
     # Clean up before test
     try:
         graph.query("MATCH (n) DETACH DELETE n")
-    except:
+    except Exception:
         pass
 
     yield graph
@@ -114,7 +114,7 @@ def graph(db):
     # Clean up after test
     try:
         graph.query("MATCH (n) DETACH DELETE n")
-    except:
+    except Exception:
         pass
 
 
@@ -162,7 +162,7 @@ class TestBasicCRUD:
 
         # Update
         saved.age = 26
-        updated = person_repo.save(saved)
+        person_repo.save(saved)
 
         # Verify
         found = person_repo.find_by_id(saved.id)

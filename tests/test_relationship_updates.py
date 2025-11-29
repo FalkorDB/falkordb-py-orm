@@ -2,10 +2,9 @@
 
 import pytest
 from typing import List, Optional
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 from falkordb_orm import node, generated_id, relationship, Repository
-from falkordb_orm.metadata import get_entity_metadata
 
 
 # Test entities

@@ -2,7 +2,7 @@
 
 import pytest
 from typing import List, Optional
-from unittest.mock import Mock, MagicMock, call
+from unittest.mock import Mock
 
 from falkordb_orm import node, generated_id, relationship, Repository
 from falkordb_orm.relationships import RelationshipManager
@@ -87,7 +87,7 @@ class TestCascadeSave:
 
         # Save employee
         repo = Repository(graph, Employee)
-        saved = repo.save(employee)
+        repo.save(employee)
 
         # Verify company was saved (cascade)
         assert company.id is not None
@@ -122,7 +122,7 @@ class TestCascadeSave:
 
         # Save alice
         repo = Repository(graph, Person)
-        saved = repo.save(alice)
+        repo.save(alice)
 
         # Verify all entities got IDs
         assert alice.id is not None
@@ -152,7 +152,7 @@ class TestCascadeSave:
 
         # Save employee
         repo = Repository(graph, Employee)
-        saved = repo.save(employee)
+        repo.save(employee)
 
         # Should only save employee + relationship, not company again
         # employee save (1) + relationship create (1) = 2 queries
@@ -178,7 +178,7 @@ class TestCascadeSave:
 
         # Save alice
         repo = Repository(graph, NonCascadePerson)
-        saved = repo.save(alice)
+        repo.save(alice)
 
         # Bob should NOT be saved (no ID assigned)
         assert bob.id is None
@@ -211,7 +211,7 @@ class TestCascadeSave:
 
         # Save team
         repo = Repository(graph, Team)
-        saved = repo.save(team)
+        repo.save(team)
 
         # Verify all entities got IDs
         assert team.id is not None
@@ -245,7 +245,7 @@ class TestCascadeSave:
 
         # Save alice (which cascades to bob, which would cascade back to alice)
         repo = Repository(graph, Person)
-        saved = repo.save(alice)
+        repo.save(alice)
 
         # Should not cause infinite loop
         # alice save + bob save (cascade) + 2 relationships = 4 queries
@@ -275,7 +275,7 @@ class TestCascadeSave:
 
         # Save employee
         repo = Repository(graph, Employee)
-        saved = repo.save(employee)
+        repo.save(employee)
 
         # Find relationship creation query
         rel_queries = [q for q in queries_executed if "WORKS_FOR" in q[0]]
@@ -301,7 +301,7 @@ class TestCascadeSave:
 
         # Save alice
         repo = Repository(graph, Person)
-        saved = repo.save(alice)
+        repo.save(alice)
 
         # Should only save alice, no relationship queries
         assert graph.query.call_count == 1
@@ -318,7 +318,7 @@ class TestCascadeSave:
 
         # Save employee
         repo = Repository(graph, Employee)
-        saved = repo.save(employee)
+        repo.save(employee)
 
         # Should only save employee, no relationship queries
         assert graph.query.call_count == 1

@@ -5,7 +5,6 @@ from typing import List, Optional
 from unittest.mock import Mock
 
 from falkordb_orm import node, generated_id, relationship, Repository
-from falkordb_orm.metadata import get_entity_metadata
 
 
 # Test entities
@@ -70,7 +69,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with fetch hint
-        person = repo.find_by_id(1, fetch=["friends"])
+        repo.find_by_id(1, fetch=["friends"])
 
         # Verify eager loading query was used
         assert graph.query.called
@@ -96,7 +95,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find without fetch hint
-        person = repo.find_by_id(1)
+        repo.find_by_id(1)
 
         # Verify standard query was used (no OPTIONAL MATCH)
         assert graph.query.called
@@ -124,7 +123,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find all with fetch hint
-        people = repo.find_all(fetch=["friends"])
+        repo.find_all(fetch=["friends"])
 
         # Verify eager loading query was used
         assert graph.query.called
@@ -156,7 +155,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with multiple fetch hints
-        person = repo.find_by_id(1, fetch=["friends", "company"])
+        repo.find_by_id(1, fetch=["friends", "company"])
 
         # Verify both relationships in query
         assert graph.query.called
@@ -191,7 +190,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with eager loading
-        person = repo.find_by_id(1, fetch=["friends"])
+        repo.find_by_id(1, fetch=["friends"])
 
         # Only one query should be executed
         assert graph.query.call_count == 1
@@ -222,7 +221,7 @@ class TestEagerLoading:
         repo = Repository(graph, Team)
 
         # Find with eager loading
-        team = repo.find_by_id(1, fetch=["members"])
+        repo.find_by_id(1, fetch=["members"])
 
         # Verify query was called
         assert graph.query.called
@@ -252,7 +251,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with eager loading
-        person = repo.find_by_id(1, fetch=["company"])
+        repo.find_by_id(1, fetch=["company"])
 
         # Verify query was called
         assert graph.query.called
@@ -274,7 +273,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with eager loading
-        person = repo.find_by_id(1, fetch=["friends"])
+        repo.find_by_id(1, fetch=["friends"])
 
         # Should handle empty relationships gracefully
         assert graph.query.called
@@ -296,7 +295,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with eager loading
-        person = repo.find_by_id(1, fetch=["company"])
+        repo.find_by_id(1, fetch=["company"])
 
         # Should handle None relationships gracefully
         assert graph.query.called
@@ -316,7 +315,7 @@ class TestEagerLoading:
         repo = Repository(graph, Person)
 
         # Find with invalid fetch hint
-        person = repo.find_by_id(1, fetch=["nonexistent_relationship"])
+        repo.find_by_id(1, fetch=["nonexistent_relationship"])
 
         # Should not crash, just ignore invalid hint
         assert graph.query.called
@@ -341,7 +340,7 @@ class TestEagerLoading:
         repo = Repository(graph, Company)
 
         # Find with eager loading (INCOMING relationship)
-        company = repo.find_by_id(1, fetch=["employees"])
+        repo.find_by_id(1, fetch=["employees"])
 
         # Verify query uses correct direction
         assert graph.query.called
@@ -375,7 +374,7 @@ class TestEagerLoading:
         repo = Repository(graph, Developer)
 
         # Find with multiple relationships
-        dev = repo.find_by_id(1, fetch=["projects", "team"])
+        repo.find_by_id(1, fetch=["projects", "team"])
 
         # Should load both relationships
         assert graph.query.called
@@ -401,7 +400,7 @@ class TestEagerLoadingPerformance:
         )
 
         repo_eager = Repository(graph_eager, Person)
-        person_eager = repo_eager.find_by_id(1, fetch=["friends"])
+        repo_eager.find_by_id(1, fetch=["friends"])
         eager_queries = graph_eager.query.call_count
 
         # Lazy loading - would require additional queries
@@ -429,7 +428,7 @@ class TestEagerLoadingPerformance:
         repo = Repository(graph, Person)
 
         # Find all with eager loading
-        people = repo.find_all(fetch=["friends"])
+        repo.find_all(fetch=["friends"])
 
         # Should use single query for all entities
         assert graph.query.call_count == 1
@@ -453,7 +452,7 @@ class TestEagerLoadingEdgeCases:
         repo = Repository(graph, Person)
 
         # Find with empty fetch list
-        person = repo.find_by_id(1, fetch=[])
+        repo.find_by_id(1, fetch=[])
 
         # Should use standard query
         assert graph.query.called
@@ -478,7 +477,7 @@ class TestEagerLoadingEdgeCases:
         repo = Repository(graph, Person)
 
         # Find with duplicate hints
-        person = repo.find_by_id(1, fetch=["friends", "friends"])
+        repo.find_by_id(1, fetch=["friends", "friends"])
 
         # Should handle gracefully
         assert graph.query.called
@@ -498,7 +497,7 @@ class TestEagerLoadingEdgeCases:
         repo = Repository(graph, Person)
 
         # Find with wrong case (should not match)
-        person = repo.find_by_id(1, fetch=["FRIENDS"])  # Should be "friends"
+        repo.find_by_id(1, fetch=["FRIENDS"])  # Should be "friends"
 
         # Should handle gracefully (ignore invalid hint)
         assert graph.query.called

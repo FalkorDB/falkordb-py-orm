@@ -1,11 +1,10 @@
 """Tests for schema management."""
 
-import pytest
 from unittest.mock import Mock
 from typing import Optional
 
 from falkordb_orm import node, property, indexed, unique, generated_id
-from falkordb_orm.schema import SchemaManager, SchemaValidationResult
+from falkordb_orm.schema import SchemaManager
 
 
 @node("User")

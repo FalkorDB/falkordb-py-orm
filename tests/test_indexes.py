@@ -1,11 +1,11 @@
 """Tests for index management."""
 
 import pytest
-from unittest.mock import Mock, MagicMock
+from unittest.mock import Mock
 from typing import Optional
 
 from falkordb_orm import node, property, indexed, unique, generated_id
-from falkordb_orm.indexes import IndexManager, IndexInfo
+from falkordb_orm.indexes import IndexManager
 from falkordb_orm.exceptions import QueryException
 
 

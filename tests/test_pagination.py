@@ -244,7 +244,7 @@ class TestRepositoryPagination:
 
         repo = Repository(graph, Person)
         pageable = Pageable(page=0, size=5, sort_by="name", direction="DESC")
-        page = repo.find_all_paginated(pageable)
+        repo.find_all_paginated(pageable)
 
         # Verify sorting was applied
         assert graph.query.call_count == 2

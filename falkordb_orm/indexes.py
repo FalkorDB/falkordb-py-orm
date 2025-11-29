@@ -1,9 +1,9 @@
 """Index management for FalkorDB entities."""
 
-from typing import Any, Dict, List, Optional, Type
+from typing import Any, List, Optional, Type
 from dataclasses import dataclass
 
-from .metadata import get_entity_metadata, PropertyMetadata
+from .metadata import get_entity_metadata
 from .exceptions import QueryException
 
 
@@ -139,7 +139,7 @@ class IndexManager:
 
                 try:
                     self.graph.query(query)
-                except Exception as e:
+                except Exception:
                     # Ignore if index doesn't exist
                     pass
 
@@ -217,7 +217,7 @@ class IndexManager:
 
             return indexes
 
-        except Exception as e:
+        except Exception:
             # If db.indexes() not available, return empty list
             return []
 
@@ -309,6 +309,6 @@ class IndexManager:
         try:
             self.graph.query(query)
             return query
-        except Exception as e:
+        except Exception:
             # Ignore if index doesn't exist
             return query

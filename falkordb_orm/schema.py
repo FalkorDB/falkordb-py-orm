@@ -41,7 +41,7 @@ class SchemaValidationResult:
                 lines.append(f"  - {idx.label}.{idx.property_name} ({idx.index_type})")
 
         if self.errors:
-            lines.append(f"\nErrors:")
+            lines.append("\nErrors:")
             for error in self.errors:
                 lines.append(f"  - {error}")
 
@@ -194,7 +194,7 @@ class SchemaManager:
                     label, prop_name, idx_type if not unique else None, unique
                 )
                 created += 1
-            except Exception as e:
+            except Exception:
                 # Log error but continue
                 pass
 
@@ -204,7 +204,7 @@ class SchemaManager:
                 try:
                     self.index_manager.drop_index_for_property(idx.label, idx.property_name)
                     dropped += 1
-                except Exception as e:
+                except Exception:
                     # Log error but continue
                     pass
 
