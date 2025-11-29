@@ -363,9 +363,7 @@ class RelationshipManager:
             source_id: Source node ID
             rel_meta: Relationship metadata
         """
-        cypher, params = self._query_builder.build_relationship_delete_query(
-            rel_meta, source_id
-        )
+        cypher, params = self._query_builder.build_relationship_delete_query(rel_meta, source_id)
 
         self._graph.query(cypher, params)
 

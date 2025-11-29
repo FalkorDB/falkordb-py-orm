@@ -139,7 +139,9 @@ class Repository(Generic[T]):
                     return None
 
                 record = result.result_set[0]
-                return self.mapper.map_with_relationships(record, self.entity_class, fetch, header=result.header)
+                return self.mapper.map_with_relationships(
+                    record, self.entity_class, fetch, header=result.header
+                )
             else:
                 # Standard lazy loading
                 cypher, params = self.query_builder.build_match_by_id_query(
@@ -181,7 +183,9 @@ class Repository(Generic[T]):
 
                 entities: List[T] = []
                 for record in result.result_set:
-                    entity = self.mapper.map_with_relationships(record, self.entity_class, fetch, header=result.header)
+                    entity = self.mapper.map_with_relationships(
+                        record, self.entity_class, fetch, header=result.header
+                    )
                     entities.append(entity)
 
                 return entities
@@ -193,7 +197,9 @@ class Repository(Generic[T]):
 
                 entities: List[T] = []
                 for record in result.result_set:
-                    entity = self.mapper.map_from_record(record, self.entity_class, header=result.header)
+                    entity = self.mapper.map_from_record(
+                        record, self.entity_class, header=result.header
+                    )
                     entities.append(entity)
 
                 return entities
@@ -408,7 +414,9 @@ class Repository(Generic[T]):
             # Map entities
             entities: List[T] = []
             for record in result.result_set:
-                entity = self.mapper.map_from_record(record, self.entity_class, header=result.header)
+                entity = self.mapper.map_from_record(
+                    record, self.entity_class, header=result.header
+                )
                 entities.append(entity)
 
             # Create and return Page
@@ -416,7 +424,7 @@ class Repository(Generic[T]):
                 content=entities,
                 page_number=pageable.page,
                 page_size=pageable.size,
-                total_elements=total_elements
+                total_elements=total_elements,
             )
 
         except Exception as e:

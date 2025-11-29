@@ -490,8 +490,9 @@ class QueryBuilder:
             if target_class is None and rel_meta.target_class_name:
                 # Try to resolve from registry
                 from .registry import get_entity_class
+
                 target_class = get_entity_class(rel_meta.target_class_name)
-            
+
             if target_class is None:
                 continue
 
@@ -559,8 +560,9 @@ class QueryBuilder:
             if target_class is None and rel_meta.target_class_name:
                 # Try to resolve from registry
                 from .registry import get_entity_class
+
                 target_class = get_entity_class(rel_meta.target_class_name)
-            
+
             if target_class is None:
                 continue
 
@@ -654,7 +656,11 @@ class QueryBuilder:
         return cypher, params
 
     def build_paginated_derived_query(
-        self, metadata: EntityMetadata, spec: QuerySpec, param_values: List[Any], pageable: "Pageable"
+        self,
+        metadata: EntityMetadata,
+        spec: QuerySpec,
+        param_values: List[Any],
+        pageable: "Pageable",
     ) -> tuple[str, Dict[str, Any]]:
         """
         Build paginated derived query.

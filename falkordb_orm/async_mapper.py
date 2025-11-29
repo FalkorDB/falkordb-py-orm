@@ -171,7 +171,9 @@ class AsyncEntityMapper:
                 f"Failed to create instance of {entity_class.__name__}: {e}"
             ) from e
 
-    async def map_from_record(self, record: Any, entity_class: Type[T], var_name: str = "n", header: Any = None) -> T:
+    async def map_from_record(
+        self, record: Any, entity_class: Type[T], var_name: str = "n", header: Any = None
+    ) -> T:
         """
         Convert FalkorDB query result record to entity instance.
 
@@ -196,7 +198,7 @@ class AsyncEntityMapper:
                     if col_name == var_name:
                         column_index = idx
                         break
-                
+
                 if column_index is not None:
                     node = record[column_index]
                 else:
@@ -208,7 +210,7 @@ class AsyncEntityMapper:
         else:
             # Dict-based record
             node = record[var_name]
-        
+
         return await self.map_from_node(node, entity_class)
 
     def update_entity_id(self, entity: Any, node_id: int) -> None:

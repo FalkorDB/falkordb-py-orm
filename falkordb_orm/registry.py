@@ -9,7 +9,7 @@ _entity_registry: Dict[str, Type] = {}
 def register_entity(class_name: str, entity_class: Type) -> None:
     """
     Register an entity class in the global registry.
-    
+
     Args:
         class_name: Name of the class
         entity_class: The entity class type
@@ -20,10 +20,10 @@ def register_entity(class_name: str, entity_class: Type) -> None:
 def get_entity_class(class_name: str) -> Optional[Type]:
     """
     Get an entity class from the registry by name.
-    
+
     Args:
         class_name: Name of the class
-        
+
     Returns:
         Entity class if registered, None otherwise
     """

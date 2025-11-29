@@ -539,6 +539,7 @@ def node(
 
         # Register entity in global registry for forward reference resolution
         from .registry import register_entity
+
         register_entity(cls.__name__, cls)
 
         # Generate __init__ if not already defined by user
