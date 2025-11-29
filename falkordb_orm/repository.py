@@ -135,7 +135,7 @@ class Repository(Generic[T]):
                     return None
 
                 record = result.result_set[0]
-                return self.mapper.map_with_relationships(record, self.entity_class, fetch)
+                return self.mapper.map_with_relationships(record, self.entity_class, fetch, header=result.header)
             else:
                 # Standard lazy loading
                 cypher, params = self.query_builder.build_match_by_id_query(
@@ -148,7 +148,7 @@ class Repository(Generic[T]):
                     return None
 
                 record = result.result_set[0]
-                return self.mapper.map_from_record(record, self.entity_class)
+                return self.mapper.map_from_record(record, self.entity_class, header=result.header)
 
         except Exception as e:
             raise QueryException(f"Failed to find entity by ID: {e}") from e
@@ -177,7 +177,7 @@ class Repository(Generic[T]):
 
                 entities: List[T] = []
                 for record in result.result_set:
-                    entity = self.mapper.map_with_relationships(record, self.entity_class, fetch)
+                    entity = self.mapper.map_with_relationships(record, self.entity_class, fetch, header=result.header)
                     entities.append(entity)
 
                 return entities
@@ -189,7 +189,7 @@ class Repository(Generic[T]):
 
                 entities: List[T] = []
                 for record in result.result_set:
-                    entity = self.mapper.map_from_record(record, self.entity_class)
+                    entity = self.mapper.map_from_record(record, self.entity_class, header=result.header)
                     entities.append(entity)
 
                 return entities

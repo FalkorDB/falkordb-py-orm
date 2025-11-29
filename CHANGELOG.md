@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-11-29
+
+### Fixed
+- Enhanced query result record mapping to support both list-based and dict-based formats
+- Added header-based column resolution for accurate variable name mapping in query results
+- Improved backward compatibility with fallback to first column when header unavailable
+- Fixed potential column mismatch issues in `map_from_record()` and `map_with_relationships()`
+
 ## [1.0.0] - 2024-11-23
 
 ### Initial Release 🎉

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "falkordb-orm"
-version = "1.0.0"
+version = "1.0.1"
 description = "Object-Graph Mapping for FalkorDB with Spring Data-inspired patterns"
 authors = ["FalkorDB Team <hello@falkordb.com>"]
 license = "MIT"

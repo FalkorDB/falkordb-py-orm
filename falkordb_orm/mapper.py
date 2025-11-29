@@ -294,19 +294,44 @@ class EntityMapper:
                 f"Failed to create instance of {entity_class.__name__}: {e}"
             ) from e
 
-    def map_from_record(self, record: Any, entity_class: Type[T], var_name: str = "n") -> T:
+    def map_from_record(self, record: Any, entity_class: Type[T], var_name: str = "n", header: Any = None) -> T:
         """
         Convert FalkorDB query result record to entity instance.
 
         Args:
-            record: FalkorDB result record
+            record: FalkorDB result record (list or dict)
             entity_class: Target entity class
             var_name: Variable name in query (default: 'n')
+            header: Optional header from query result for column name mapping
 
         Returns:
             Entity instance
         """
-        node = record[var_name]
+        # Handle both list-based (FalkorDB) and dict-based (custom) records
+        if isinstance(record, list):
+            # FalkorDB returns list format - need to find column index
+            if header is not None:
+                # Header format: [[column_id, column_name], ...]
+                column_index = None
+                for idx, header_item in enumerate(header):
+                    # header_item is [column_id, column_name]
+                    col_name = header_item[1] if isinstance(header_item, list) else header_item
+                    if col_name == var_name:
+                        column_index = idx
+                        break
+                
+                if column_index is not None:
+                    node = record[column_index]
+                else:
+                    # Fallback: assume first column if var_name not found
+                    node = record[0]
+            else:
+                # No header provided, assume first column
+                node = record[0]
+        else:
+            # Dictionary-based record (backward compatible)
+            node = record[var_name]
+        
         return self.map_from_node(node, entity_class)
 
     def update_entity_id(self, entity: Any, node_id: int) -> None:
@@ -323,22 +348,36 @@ class EntityMapper:
             setattr(entity, metadata.id_property.python_name, node_id)
 
     def map_with_relationships(
-        self, record: Any, entity_class: Type[T], fetch_hints: List[str], var_name: str = "n"
+        self, record: Any, entity_class: Type[T], fetch_hints: List[str], var_name: str = "n", header: Any = None
     ) -> T:
         """
         Convert FalkorDB query result record to entity with eagerly loaded relationships.
 
         Args:
-            record: FalkorDB result record
+            record: FalkorDB result record (list or dict)
             entity_class: Target entity class
             fetch_hints: List of relationship names that were eagerly loaded
             var_name: Variable name in query (default: 'n')
+            header: Optional header from query result for column name mapping
 
         Returns:
             Entity instance with relationships populated
         """
-        # Map main entity
-        node = record[var_name]
+        # Map main entity - handle both list and dict format
+        if isinstance(record, list) and header is not None:
+            # Find column index for var_name
+            column_index = 0
+            for idx, header_item in enumerate(header):
+                col_name = header_item[1] if isinstance(header_item, list) else header_item
+                if col_name == var_name:
+                    column_index = idx
+                    break
+            node = record[column_index]
+        elif isinstance(record, list):
+            node = record[0]  # Fallback to first column
+        else:
+            node = record[var_name]  # Dictionary format
+        
         entity = self.map_from_node(node, entity_class)
 
         # Get metadata
