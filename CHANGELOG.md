@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-11-29
+
+### Fixed
+- **Critical**: Fixed generated ID detection in query builder - entities with `generated_id()` now correctly use FalkorDB's internal `id()` function instead of property-based matching
+- **Critical**: Fixed entity ID mapping in mapper - retrieved entities now have their IDs properly set from the internal node ID
+- **Enhancement**: Implemented forward reference resolution for relationships - self-referential relationships (e.g., `Person` → `Person`) now work correctly
+- All relationship loading operations (lazy and eager) now function as expected
+
+### Technical Details
+- Changed ID type detection from `id_generator is not None` to `hasattr(property, 'id_generator')` to properly identify generated ID fields
+- Added registry-based forward reference resolution in `_initialize_lazy_relationships()`
+- Fixes apply to `query_builder.py` (3 locations) and `mapper.py` (2 locations)
+
 ## [1.1.0] - 2025-11-29
 
 ### 🎉 Major Release - Advanced Features

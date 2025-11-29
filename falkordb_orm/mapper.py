@@ -217,11 +217,13 @@ class EntityMapper:
             # Determine target class
             target_class = rel_meta.target_class
 
-            # If target_class is not resolved, try to resolve it
+            # If target_class is not resolved, try to resolve it from the registry
             if target_class is None and rel_meta.target_class_name:
-                # Try to get from metadata cache or global namespace
-                # For now, skip if not resolved - will be handled in Phase 3c
-                continue
+                from .registry import get_entity_class
+                target_class = get_entity_class(rel_meta.target_class_name)
+                if target_class is None:
+                    # Still not resolved - skip this relationship
+                    continue
 
             if target_class is None:
                 continue
@@ -273,8 +275,8 @@ class EntityMapper:
                     )
 
                 kwargs[prop.python_name] = python_value
-            elif prop.is_id and internal_id is not None and prop.id_generator is not None:
-                # Use internal ID for auto-generated ID fields
+            elif prop.is_id and internal_id is not None and hasattr(prop, 'id_generator'):
+                # Use internal ID for auto-generated ID fields (fields created with generated_id())
                 kwargs[prop.python_name] = internal_id
             else:
                 # Set to None if not present
