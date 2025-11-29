@@ -52,19 +52,26 @@ FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping fo
 - **📊 Async Derived Queries**: Auto-generated async query methods
 - **🌐 Framework Ready**: Perfect for FastAPI, aiohttp, and async Python applications
 
+### Advanced Features (v1.1.0 NEW! 🎉)
+
+- **⚡ Transaction Support**: Context managers with identity map and change tracking
+- **🗂️ Index Management**: `@indexed` and `@unique` decorators with schema validation
+- **📄 Pagination**: Full pagination with sorting and navigation (`Pageable`, `Page[T]`)
+- **🔄 Relationship Updates**: Automatic deletion of old edges when relationships change
+
 ### Production Features
 
 - **📚 Comprehensive Documentation**: Complete API reference and migration guides
 - **🧠 Enhanced Exceptions**: Contextual error messages with structured error information
 - **🚀 CI/CD Workflows**: Automated testing, linting, and publishing
 - **💾 Memory Optimization**: Interned strings for repeated values with `@interned` decorator
+- **🧪 Integration Tests**: Full end-to-end tests with real FalkorDB
 
 ### 📋 Future Enhancements (Optional)
 
-- **⚡ Transaction Support**: Context managers for transactional operations
-- **🗂️ Index Management**: Decorator-based index and constraint creation
-- **📦 Migration System**: Schema version management
-- **🔍 Query Caching**: Result caching for performance
+- **📦 Migration System**: Schema version management and migrations
+- **🔍 Query Result Caching**: Result caching for performance
+- **⚙️ Batch Optimization**: UNWIND-based bulk operations
 
 ## 📜 Usage
 
@@ -163,25 +170,69 @@ async def main():
 asyncio.run(main())
 ```
 
-### Interned Strings for Memory Optimization (Phase 6)
+### Transaction Support (v1.1.0 NEW!)
 
 ```python
-from falkordb_orm import node, interned
-from typing import Optional
+from falkordb_orm import Session
+
+# Use session for transactions with identity map
+with Session(graph) as session:
+    # Get entity (cached in identity map)
+    person = session.get(Person, 1)
+    person.age = 31
+    session._dirty.add(person)  # Mark as modified
+    
+    # Add new entities
+    new_person = Person(name="Bob", age=25)
+    session.add(new_person)
+    
+    # Auto-commit on success, auto-rollback on error
+    session.commit()
+```
+
+### Index Management (v1.1.0 NEW!)
+
+```python
+from falkordb_orm import node, indexed, unique, IndexManager
 
 @node("User")
 class User:
-    id: Optional[int] = None
-    name: str
-    email: str
-    
-    # Interned properties - deduplicated for memory savings
-    country: str = interned()  # "United States" stored once for all US users
-    city: str = interned()     # "New York" stored once for all NYC users  
-    status: str = interned()   # "Active", "Inactive" stored once each
-    
-# Memory benefit: Repeated values stored only once!
-# Perfect for: countries, cities, status fields, categories, tags
+    email: str = unique(required=True)       # Unique constraint
+    age: int = indexed()                      # Regular index
+    bio: str = indexed(index_type="FULLTEXT") # Full-text search
+
+# Create indexes
+manager = IndexManager(graph)
+manager.create_indexes(User, if_not_exists=True)
+
+# Schema validation
+from falkordb_orm import SchemaManager
+schema_manager = SchemaManager(graph)
+result = schema_manager.validate_schema([User, Product])
+if not result.is_valid:
+    schema_manager.sync_schema([User, Product])
+```
+
+### Pagination (v1.1.0 NEW!)
+
+```python
+from falkordb_orm import Pageable
+
+# Create pageable (page 0, 10 items, sorted by age)
+pageable = Pageable(page=0, size=10, sort_by="age", direction="ASC")
+
+# Get paginated results
+page = repo.find_all_paginated(pageable)
+
+print(f"Page {page.page_number + 1} of {page.total_pages}")
+print(f"Total: {page.total_elements} items")
+
+for person in page.content:
+    print(person.name)
+
+# Navigate pages
+if page.has_next():
+    next_page = repo.find_all_paginated(pageable.next())
 ```
 
 ### Getting Started

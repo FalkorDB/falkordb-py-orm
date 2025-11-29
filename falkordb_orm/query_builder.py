@@ -1,9 +1,12 @@
 """Query builder for generating Cypher queries."""
 
-from typing import Any, Dict, List, Type
+from typing import Any, Dict, List, Type, TYPE_CHECKING
 
 from .metadata import EntityMetadata, RelationshipMetadata, get_entity_metadata
 from .query_parser import QuerySpec, Condition, OrderClause, Operation, Operator, LogicalOperator
+
+if TYPE_CHECKING:
+    from .pagination import Pageable
 
 
 class QueryBuilder:
@@ -415,6 +418,40 @@ class QueryBuilder:
 
         return cypher, params
 
+    def build_relationship_delete_query(
+        self, relationship_meta: RelationshipMetadata, source_id: int
+    ) -> tuple[str, Dict[str, Any]]:
+        """
+        Build query to delete all relationship edges of a specific type from a source node.
+
+        Args:
+            relationship_meta: Relationship metadata
+            source_id: Source node ID
+
+        Returns:
+            Tuple of (cypher_query, parameters)
+        """
+        # Build relationship pattern based on direction
+        if relationship_meta.direction == "OUTGOING":
+            rel_pattern = f"-[r:{relationship_meta.relationship_type}]->"
+        elif relationship_meta.direction == "INCOMING":
+            rel_pattern = f"<-[r:{relationship_meta.relationship_type}]-"
+        elif relationship_meta.direction == "BOTH":
+            rel_pattern = f"-[r:{relationship_meta.relationship_type}]-"
+        else:
+            raise ValueError(f"Invalid direction: {relationship_meta.direction}")
+
+        # Build query - match all relationships of this type from source and delete them
+        cypher = f"""
+        MATCH (source){rel_pattern}(target)
+        WHERE id(source) = $source_id
+        DELETE r
+        """
+
+        params = {"source_id": source_id}
+
+        return cypher, params
+
     def build_eager_loading_query(
         self, metadata: EntityMetadata, entity_id: Any, fetch_hints: List[str]
     ) -> tuple[str, Dict[str, Any]]:
@@ -448,8 +485,18 @@ class QueryBuilder:
             if rel_meta is None:
                 continue
 
+            # Resolve target class if needed
+            target_class = rel_meta.target_class
+            if target_class is None and rel_meta.target_class_name:
+                # Try to resolve from registry
+                from .registry import get_entity_class
+                target_class = get_entity_class(rel_meta.target_class_name)
+            
+            if target_class is None:
+                continue
+
             # Get target metadata
-            target_metadata = get_entity_metadata(rel_meta.target_class)
+            target_metadata = get_entity_metadata(target_class)
             if target_metadata is None:
                 continue
 
@@ -507,8 +554,18 @@ class QueryBuilder:
             if rel_meta is None:
                 continue
 
+            # Resolve target class if needed
+            target_class = rel_meta.target_class
+            if target_class is None and rel_meta.target_class_name:
+                # Try to resolve from registry
+                from .registry import get_entity_class
+                target_class = get_entity_class(rel_meta.target_class_name)
+            
+            if target_class is None:
+                continue
+
             # Get target metadata
-            target_metadata = get_entity_metadata(rel_meta.target_class)
+            target_metadata = get_entity_metadata(target_class)
             if target_metadata is None:
                 continue
 
@@ -536,5 +593,102 @@ class QueryBuilder:
         cypher = "\n".join(cypher_parts)
 
         params: Dict[str, Any] = {}
+
+        return cypher, params
+
+    def build_count_query_with_conditions(
+        self, metadata: EntityMetadata, spec: QuerySpec, param_values: List[Any]
+    ) -> tuple[str, Dict[str, Any]]:
+        """
+        Build COUNT query with conditions for pagination.
+
+        Args:
+            metadata: Entity metadata
+            spec: Query specification
+            param_values: Parameter values for conditions
+
+        Returns:
+            Tuple of (cypher_query, parameters)
+        """
+        labels_str = ":".join(metadata.labels)
+
+        # Build WHERE clause
+        where_clause, params = self.build_where_clause(
+            spec.conditions, spec.logical_operator, param_values
+        )
+
+        # Build query
+        cypher = f"MATCH (n:{labels_str})"
+        if where_clause:
+            cypher += f" WHERE {where_clause}"
+        cypher += " RETURN count(n) as count"
+
+        return cypher, params
+
+    def build_paginated_query(
+        self, metadata: EntityMetadata, pageable: "Pageable"
+    ) -> tuple[str, Dict[str, Any]]:
+        """
+        Build paginated query for find_all.
+
+        Args:
+            metadata: Entity metadata
+            pageable: Pagination parameters
+
+        Returns:
+            Tuple of (cypher_query, parameters)
+        """
+        labels_str = ":".join(metadata.labels)
+
+        # Build query
+        cypher = f"MATCH (n:{labels_str}) RETURN n"
+
+        # Add ORDER BY if specified
+        if pageable.sort_by:
+            cypher += f" ORDER BY n.{pageable.sort_by} {pageable.direction}"
+
+        # Add SKIP and LIMIT
+        cypher += f" SKIP {pageable.skip()} LIMIT {pageable.size}"
+
+        params: Dict[str, Any] = {}
+        return cypher, params
+
+    def build_paginated_derived_query(
+        self, metadata: EntityMetadata, spec: QuerySpec, param_values: List[Any], pageable: "Pageable"
+    ) -> tuple[str, Dict[str, Any]]:
+        """
+        Build paginated derived query.
+
+        Args:
+            metadata: Entity metadata
+            spec: Query specification
+            param_values: Parameter values for conditions
+            pageable: Pagination parameters
+
+        Returns:
+            Tuple of (cypher_query, parameters)
+        """
+        labels_str = ":".join(metadata.labels)
+
+        # Build WHERE clause
+        where_clause, params = self.build_where_clause(
+            spec.conditions, spec.logical_operator, param_values
+        )
+
+        # Build query
+        cypher = f"MATCH (n:{labels_str})"
+        if where_clause:
+            cypher += f" WHERE {where_clause}"
+        cypher += " RETURN n"
+
+        # Add ORDER BY - prefer pageable sort, fall back to spec ordering
+        if pageable.sort_by:
+            cypher += f" ORDER BY n.{pageable.sort_by} {pageable.direction}"
+        elif spec.ordering:
+            order_by_clause = self.build_order_by_clause(spec.ordering)
+            cypher += f" {order_by_clause}"
+
+        # Add SKIP and LIMIT
+        cypher += f" SKIP {pageable.skip()} LIMIT {pageable.size}"
 
         return cypher, params

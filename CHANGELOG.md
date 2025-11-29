@@ -5,6 +5,92 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.1.0] - 2025-11-29
+
+### 🎉 Major Release - Advanced Features
+
+This release adds transaction support, index management, pagination, and relationship update functionality, bringing the ORM to ~90% feature completion.
+
+### Added - Phase 7: Transaction Support
+- **Session Management**: `Session` class with identity map and change tracking
+  - Identity map prevents duplicate entity loads within session
+  - Automatic change tracking with dirty checking
+  - Context manager support with auto-commit on success
+  - Automatic rollback on exceptions
+- **Session Methods**: `add()`, `delete()`, `get()`, `flush()`, `commit()`, `rollback()`, `close()`
+- **Session Properties**: `is_active` and `has_pending_changes`
+- **Async Support**: `AsyncSession` with full async/await support
+- **Tests**: 608 lines, 40+ comprehensive test cases
+- **Examples**: `examples/transaction_example.py` with 9 scenarios
+- **Documentation**: Complete transaction guide in `PHASE7_COMPLETE.md`
+
+### Added - Phase 8: Index Management
+- **Declarative Indexes**: `@indexed` decorator for property-level indexes
+- **Unique Constraints**: `@unique` decorator for unique constraints
+- **Index Types**: Support for RANGE, FULLTEXT, and VECTOR indexes
+- **IndexManager**: Programmatic index creation, deletion, and listing
+  - `create_indexes()`, `drop_indexes()`, `ensure_indexes()`
+  - `list_indexes()`, `create_index_for_property()`, `drop_index_for_property()`
+- **SchemaManager**: Schema validation and synchronization
+  - `validate_schema()`, `sync_schema()`, `ensure_schema()`
+  - `get_schema_diff()`, `get_schema_info()`
+- **Data Classes**: `IndexInfo` and `SchemaValidationResult`
+- **Tests**: 27 test cases (454 lines) in `test_indexes.py` and `test_schema.py`
+- **Examples**: `examples/indexes_example.py` with 9 comprehensive scenarios
+- **Documentation**: Complete index guide in `PHASE8_COMPLETE.md`
+
+### Added - Phase 9: Pagination
+- **Pageable Class**: Pagination parameters with sorting support
+  - Page number (0-indexed), page size, sort_by, direction
+  - Navigation methods: `next()`, `previous()`, `first()`
+- **Page Class**: Generic `Page[T]` with content and metadata
+  - Total elements, total pages, navigation helpers
+  - `has_next()`, `has_previous()`, `is_first()`, `is_last()`
+- **Repository Integration**: `find_all_paginated(pageable: Pageable)` method
+- **Query Builder**: Pagination query support with SKIP/LIMIT
+- **Tests**: 364 lines, 30+ test cases in `test_pagination.py`
+- **Documentation**: Complete pagination guide in `PHASE9_COMPLETE.md`
+
+### Added - Relationship Updates (New Feature)
+- **Automatic Edge Deletion**: Old relationship edges deleted when relationships updated
+- **Query Builder**: `build_relationship_delete_query()` method
+- **RelationshipManager**: Enhanced with `is_update` flag and edge deletion
+- **Examples**: `examples/relationship_updates_example.py` with 9 scenarios
+- **Tests**: Updated `test_relationship_updates.py` with verification tests
+
+### Added - Integration Testing
+- **Integration Test Suite**: `tests/integration/test_full_workflow.py` (507 lines)
+  - End-to-end tests with real FalkorDB instance
+  - Tests for CRUD, relationships, transactions, pagination, indexes
+  - Complex workflow scenarios (social network, company-employees)
+  - 50+ integration test cases
+
+### Changed
+- **Repository**: Enhanced `save()` to pass `is_update` flag for relationship tracking
+- **RelationshipManager**: Now deletes old edges before creating new ones on updates
+- **Query Builder**: Extended with pagination and relationship deletion support
+
+### Fixed
+- **Relationship Updates**: Old edges now properly deleted when relationships change
+- **Cascade Save**: Verified working correctly with integration tests
+
+### Documentation
+- **PHASE7_COMPLETE.md**: Transaction support guide (623 lines)
+- **PHASE8_COMPLETE.md**: Index management guide (375 lines)
+- **PHASE9_COMPLETE.md**: Pagination guide (183 lines)
+- **PHASE8_TESTS_AND_REL_UPDATES_COMPLETE.md**: Implementation summary
+- **IMPLEMENTATION_REVIEW_NOV_29_2025.md**: Comprehensive status review
+- **README.md**: Updated with v1.1.0 features and examples
+
+### Statistics
+- **Code Added**: ~5,000 lines of production code
+- **Tests Added**: ~1,500 lines of test code
+- **Documentation**: ~1,500 lines of guides
+- **Total**: ~8,000 lines across all files
+- **Completion**: ~90% feature complete
+
 ## [1.0.1] - 2024-11-29
 
 ### Fixed

@@ -35,6 +35,15 @@ class PropertyMetadata:
     interned: bool = False
     """Whether this string property should use FalkorDB's intern() function for deduplication."""
 
+    indexed: bool = False
+    """Whether this property should have an index."""
+
+    unique: bool = False
+    """Whether this property should have a unique constraint."""
+
+    index_type: Optional[str] = None
+    """Type of index (e.g., 'RANGE', 'FULLTEXT', 'VECTOR'). None means default RANGE index."""
+
 
 @dataclass
 class RelationshipMetadata:

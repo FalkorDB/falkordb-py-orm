@@ -241,7 +241,9 @@ class RelationshipManager:
         self._query_builder = query_builder
         self._entity_tracker: set = set()
 
-    def save_relationships(self, source_entity: Any, source_id: int, metadata: Any) -> None:
+    def save_relationships(
+        self, source_entity: Any, source_id: int, metadata: Any, is_update: bool = False
+    ) -> None:
         """
         Save relationships for an entity.
 
@@ -249,6 +251,7 @@ class RelationshipManager:
             source_entity: Source entity instance
             source_id: Source entity's database ID
             metadata: Entity metadata
+            is_update: Whether this is an update (True) or initial save (False)
         """
         # Track this entity to avoid infinite loops
         entity_key = (id(source_entity), source_id)
@@ -269,6 +272,10 @@ class RelationshipManager:
                 # Skip lazy proxies that haven't been modified
                 if isinstance(rel_value, (LazyList, LazySingle)):
                     continue
+
+                # If this is an update, delete existing relationship edges first
+                if is_update:
+                    self._delete_relationship_edges(source_id, rel_meta)
 
                 # Handle collection relationships
                 if rel_meta.is_collection:
@@ -344,6 +351,20 @@ class RelationshipManager:
         """
         cypher, params = self._query_builder.build_relationship_create_query(
             rel_meta, source_id, target_id
+        )
+
+        self._graph.query(cypher, params)
+
+    def _delete_relationship_edges(self, source_id: int, rel_meta: RelationshipMetadata) -> None:
+        """
+        Delete all existing relationship edges for a given relationship.
+
+        Args:
+            source_id: Source node ID
+            rel_meta: Relationship metadata
+        """
+        cypher, params = self._query_builder.build_relationship_delete_query(
+            rel_meta, source_id
         )
 
         self._graph.query(cypher, params)

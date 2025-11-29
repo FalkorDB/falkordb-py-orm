@@ -5,6 +5,7 @@ from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, Type,
 from .exceptions import EntityNotFoundException, QueryException
 from .mapper import EntityMapper
 from .metadata import EntityMetadata
+from .pagination import Page, Pageable
 from .query_builder import QueryBuilder
 from .query_parser import QueryParser, QuerySpec, Operation
 
@@ -88,7 +89,10 @@ class Repository(Generic[T]):
                 # Save relationships if any are set
                 if self.metadata.relationships:
                     self.relationship_manager.save_relationships(
-                        source_entity=entity, source_id=node_id, metadata=self.metadata
+                        source_entity=entity,
+                        source_id=node_id,
+                        metadata=self.metadata,
+                        is_update=has_id,  # Pass True if updating existing entity
                     )
 
             return entity
@@ -370,6 +374,53 @@ class Repository(Generic[T]):
 
         except Exception as e:
             raise QueryException(f"Failed to find max of property '{property_name}': {e}") from e
+
+    def find_all_paginated(self, pageable: Pageable) -> Page[T]:
+        """
+        Find all entities with pagination.
+
+        Args:
+            pageable: Pagination parameters
+
+        Returns:
+            Page object containing results and metadata
+
+        Raises:
+            QueryException: If query execution fails
+
+        Example:
+            >>> pageable = Pageable(page=0, size=10, sort_by="name", direction="ASC")
+            >>> page = repo.find_all_paginated(pageable)
+            >>> print(f"Page {page.page_number + 1} of {page.total_pages}")
+            >>> for entity in page.content:
+            ...     print(entity.name)
+        """
+        try:
+            # Get total count
+            count_cypher, count_params = self.query_builder.build_count_query(self.metadata)
+            count_result = self.graph.query(count_cypher, count_params)
+            total_elements = count_result.result_set[0][0] if count_result.result_set else 0
+
+            # Get paginated results
+            cypher, params = self.query_builder.build_paginated_query(self.metadata, pageable)
+            result = self.graph.query(cypher, params)
+
+            # Map entities
+            entities: List[T] = []
+            for record in result.result_set:
+                entity = self.mapper.map_from_record(record, self.entity_class, header=result.header)
+                entities.append(entity)
+
+            # Create and return Page
+            return Page(
+                content=entities,
+                page_number=pageable.page,
+                page_size=pageable.size,
+                total_elements=total_elements
+            )
+
+        except Exception as e:
+            raise QueryException(f"Failed to find paginated entities: {e}") from e
 
     def delete(self, entity: T) -> None:
         """

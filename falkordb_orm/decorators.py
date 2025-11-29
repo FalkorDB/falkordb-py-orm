@@ -29,11 +29,17 @@ class PropertyDescriptor:
         converter: Optional[Callable] = None,
         required: bool = False,
         interned: bool = False,
+        indexed: bool = False,
+        unique: bool = False,
+        index_type: Optional[str] = None,
     ):
         self.name = name
         self.converter = converter
         self.required = required
         self.interned = interned
+        self.indexed = indexed
+        self.unique = unique
+        self.index_type = index_type
         self._python_name: Optional[str] = None
         self._attr_name = f"_property_{id(self)}"
 
@@ -112,6 +118,9 @@ def property(
     converter: Optional[Callable] = None,
     required: bool = False,
     interned: bool = False,
+    indexed: bool = False,
+    unique: bool = False,
+    index_type: Optional[str] = None,
 ) -> Any:
     """
     Map a Python attribute to a graph property.
@@ -121,6 +130,9 @@ def property(
         converter: Custom type converter function
         required: Whether property is required (validation)
         interned: Whether to use FalkorDB's intern() function for string deduplication
+        indexed: Whether to create an index on this property
+        unique: Whether to create a unique constraint on this property
+        index_type: Type of index ('RANGE', 'FULLTEXT', 'VECTOR'). None means default RANGE
 
     Returns:
         Property descriptor
@@ -129,10 +141,19 @@ def property(
         >>> @node("Person")
         >>> class Person:
         ...     name: str = property("full_name")
-        ...     email: str = property(required=True)
+        ...     email: str = property(required=True, unique=True)
         ...     country: str = property(interned=True)  # Deduplicated string
+        ...     bio: str = property(indexed=True, index_type="FULLTEXT")
     """
-    return PropertyDescriptor(name=name, converter=converter, required=required, interned=interned)
+    return PropertyDescriptor(
+        name=name,
+        converter=converter,
+        required=required,
+        interned=interned,
+        indexed=indexed,
+        unique=unique,
+        index_type=index_type,
+    )
 
 
 def interned(name: Optional[str] = None, required: bool = False) -> Any:
@@ -165,6 +186,90 @@ def interned(name: Optional[str] = None, required: bool = False) -> Any:
         It significantly reduces memory usage for frequently repeated values.
     """
     return PropertyDescriptor(name=name, converter=None, required=required, interned=True)
+
+
+def indexed(
+    name: Optional[str] = None,
+    required: bool = False,
+    index_type: Optional[str] = None,
+) -> Any:
+    """
+    Map a Python attribute to an indexed graph property.
+
+    This is a convenience function that creates a property with an index.
+    Indexes improve query performance for properties frequently used in WHERE clauses.
+
+    Args:
+        name: Property name in graph (defaults to attribute name)
+        required: Whether property is required (validation)
+        index_type: Type of index ('RANGE', 'FULLTEXT', 'VECTOR'). None means default RANGE
+
+    Returns:
+        Property descriptor with indexed=True
+
+    Example:
+        >>> @node("Person")
+        >>> class Person:
+        ...     id: Optional[int] = generated_id()
+        ...     email: str = indexed()  # Indexed for fast lookups
+        ...     bio: str = indexed(index_type="FULLTEXT")  # Full-text search
+        ...     embedding: List[float] = indexed(index_type="VECTOR")  # Vector search
+
+    Note:
+        RANGE indexes work well for exact matches and range queries.
+        FULLTEXT indexes enable text search capabilities.
+        VECTOR indexes enable similarity search for embeddings.
+    """
+    return PropertyDescriptor(
+        name=name,
+        converter=None,
+        required=required,
+        interned=False,
+        indexed=True,
+        unique=False,
+        index_type=index_type,
+    )
+
+
+def unique(
+    name: Optional[str] = None,
+    required: bool = False,
+) -> Any:
+    """
+    Map a Python attribute to a unique graph property.
+
+    This is a convenience function that creates a property with a unique constraint.
+    Unique constraints ensure no two nodes have the same value for this property,
+    and also create an index for fast lookups.
+
+    Args:
+        name: Property name in graph (defaults to attribute name)
+        required: Whether property is required (validation)
+
+    Returns:
+        Property descriptor with unique=True
+
+    Example:
+        >>> @node("Person")
+        >>> class Person:
+        ...     id: Optional[int] = generated_id()
+        ...     email: str = unique(required=True)  # Unique email addresses
+        ...     username: str = unique()  # Unique usernames
+        ...     ssn: str = unique("social_security_number")  # Maps to different name
+
+    Note:
+        Unique constraints automatically create an index, so you don't need
+        to specify indexed=True separately.
+    """
+    return PropertyDescriptor(
+        name=name,
+        converter=None,
+        required=required,
+        interned=False,
+        indexed=True,  # Unique constraints also create an index
+        unique=True,
+        index_type=None,
+    )
 
 
 def generated_id(generator: Optional[Callable] = None) -> Any:
@@ -365,6 +470,9 @@ def node(
                     required=attr_value.required,
                     is_id=False,
                     interned=attr_value.interned,
+                    indexed=attr_value.indexed,
+                    unique=attr_value.unique,
+                    index_type=attr_value.index_type,
                 )
                 properties.append(prop_meta)
 
@@ -428,6 +536,10 @@ def node(
         )
 
         setattr(cls, "__node_metadata__", metadata)
+
+        # Register entity in global registry for forward reference resolution
+        from .registry import register_entity
+        register_entity(cls.__name__, cls)
 
         # Generate __init__ if not already defined by user
         if "__init__" not in cls.__dict__:

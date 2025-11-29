@@ -1,9 +1,9 @@
 """FalkorDB Python ORM - Object-Graph Mapping for FalkorDB."""
 
-__version__ = "0.5.0"
+__version__ = "1.1.0"
 
 # Decorators
-from .decorators import node, property, generated_id, relationship, interned
+from .decorators import node, property, generated_id, relationship, interned, indexed, unique
 from .query_decorator import query
 
 # Repository
@@ -22,6 +22,17 @@ from .exceptions import (
 
 # Types
 from .types import TypeConverter, register_converter
+
+# Pagination
+from .pagination import Page, Pageable
+
+# Session management
+from .session import Session
+from .async_session import AsyncSession
+
+# Index and schema management
+from .indexes import IndexManager, IndexInfo
+from .schema import SchemaManager, SchemaValidationResult
 
 # Metadata (for advanced usage)
 from .metadata import EntityMetadata, PropertyMetadata, RelationshipMetadata, get_entity_metadata
@@ -46,6 +57,8 @@ __all__ = [
     "generated_id",
     "relationship",
     "interned",
+    "indexed",
+    "unique",
     "query",
     # Repository
     "Repository",
@@ -60,6 +73,17 @@ __all__ = [
     # Types
     "TypeConverter",
     "register_converter",
+    # Pagination
+    "Page",
+    "Pageable",
+    # Session
+    "Session",
+    "AsyncSession",
+    # Index management
+    "IndexManager",
+    "IndexInfo",
+    "SchemaManager",
+    "SchemaValidationResult",
     # Metadata
     "EntityMetadata",
     "PropertyMetadata",

@@ -171,7 +171,7 @@ class AsyncEntityMapper:
                 f"Failed to create instance of {entity_class.__name__}: {e}"
             ) from e
 
-    async def map_from_record(self, record: Any, entity_class: Type[T], var_name: str = "n") -> T:
+    async def map_from_record(self, record: Any, entity_class: Type[T], var_name: str = "n", header: Any = None) -> T:
         """
         Convert FalkorDB query result record to entity instance.
 
@@ -179,11 +179,36 @@ class AsyncEntityMapper:
             record: FalkorDB result record
             entity_class: Target entity class
             var_name: Variable name in query (default: 'n')
+            header: Optional header from query result for column name mapping
 
         Returns:
             Entity instance
         """
-        node = record[var_name]
+        # Handle both list-based (FalkorDB) and dict-based (custom) records
+        if isinstance(record, list):
+            # FalkorDB returns list format - need to find column index
+            if header is not None:
+                # Header format: [[column_id, column_name], ...]
+                column_index = None
+                for idx, header_item in enumerate(header):
+                    # header_item is [column_id, column_name]
+                    col_name = header_item[1] if isinstance(header_item, list) else header_item
+                    if col_name == var_name:
+                        column_index = idx
+                        break
+                
+                if column_index is not None:
+                    node = record[column_index]
+                else:
+                    # Fallback: assume first column if var_name not found
+                    node = record[0]
+            else:
+                # No header provided, assume first column
+                node = record[0]
+        else:
+            # Dict-based record
+            node = record[var_name]
+        
         return await self.map_from_node(node, entity_class)
 
     def update_entity_id(self, entity: Any, node_id: int) -> None:
