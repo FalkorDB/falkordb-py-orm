@@ -30,7 +30,7 @@ class QueryBuilder:
         # Use internal FalkorDB ID if field was marked with generated_id()
         # id_generator being None means use default (FalkorDB internal ID)
         # If id_property doesn't exist or wasn't created via generated_id(), use property-based ID
-        if metadata.id_property and hasattr(metadata.id_property, 'id_generator'):
+        if metadata.id_property and hasattr(metadata.id_property, "id_generator"):
             # This ID field was created via generated_id() - use internal FalkorDB ID
             cypher = f"MATCH (n:{labels_str}) WHERE id(n) = $id RETURN n"
         else:
@@ -86,7 +86,7 @@ class QueryBuilder:
         labels_str = ":".join(metadata.labels)
 
         # Use internal FalkorDB ID if field was marked with generated_id()
-        if metadata.id_property and hasattr(metadata.id_property, 'id_generator'):
+        if metadata.id_property and hasattr(metadata.id_property, "id_generator"):
             # This ID field was created via generated_id() - use internal FalkorDB ID
             cypher = f"MATCH (n:{labels_str}) WHERE id(n) = $id DELETE n"
         else:
@@ -127,7 +127,7 @@ class QueryBuilder:
         labels_str = ":".join(metadata.labels)
 
         # Use internal FalkorDB ID if field was marked with generated_id()
-        if metadata.id_property and hasattr(metadata.id_property, 'id_generator'):
+        if metadata.id_property and hasattr(metadata.id_property, "id_generator"):
             # This ID field was created via generated_id() - use internal FalkorDB ID
             cypher = f"MATCH (n:{labels_str}) WHERE id(n) = $id RETURN count(n) > 0 as exists"
         else:
