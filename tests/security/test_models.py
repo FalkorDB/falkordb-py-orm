@@ -2,7 +2,6 @@
 
 from datetime import datetime
 
-import pytest
 
 from falkordb_orm.security import Privilege, Role, User
 from falkordb_orm.security.store import InMemoryRBACStore

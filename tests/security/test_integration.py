@@ -6,14 +6,9 @@ from typing import Optional
 import pytest
 
 from falkordb_orm import generated_id, node
-from falkordb_orm.repository import Repository
 from falkordb_orm.security import (
-    AccessDeniedException,
     Privilege,
-    RBACManager,
     Role,
-    SecureSession,
-    SecurityPolicy,
     User,
     secured,
 )

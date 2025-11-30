@@ -2,7 +2,6 @@
 
 from typing import Any, Dict, Optional, Set
 
-from ..repository import Repository
 from .models import Privilege, Role, User
 
 

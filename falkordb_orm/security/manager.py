@@ -48,7 +48,6 @@ class RBACManager:
 
         # Assign roles
         if roles:
-            role_repo = Repository(self.graph, Role)
             user.roles = []
             for role_name in roles:
                 role = self._find_role_by_name(role_name)

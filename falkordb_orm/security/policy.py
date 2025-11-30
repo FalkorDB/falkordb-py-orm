@@ -63,7 +63,6 @@ class SecurityPolicy:
         resource_type, resource_label, resource_property = self._parse_resource(resource)
 
         # Find and delete matching privileges
-        priv_repo = Repository(self.graph, Privilege)
         role_repo = Repository(self.graph, Role)
 
         role = role_repo.find_by(name=from_role)
