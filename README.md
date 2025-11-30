@@ -424,16 +424,41 @@ for person in adults:
 
 This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/spring-data-falkordb), bringing similar patterns to Python:
 
-| Feature | Spring Data FalkorDB | falkordb-orm |
-|---------|---------------------|--------------|
+| Feature | Spring Data FalkorDB | falkordb-orm (v1.2.0) |
+|---------|---------------------|------------------------|
+| **Core Mapping** |
 | Entity Mapping | `@Node` annotation | `@node` decorator |
 | Property Mapping | `@Property` | `property()` function |
 | Relationships | `@Relationship` | `relationship()` function |
+| ID Generation | `@GeneratedValue` | `generated_id()` |
+| **Repository Pattern** |
 | Repository | `FalkorDBRepository<T, ID>` | `Repository[T]` |
 | Query Methods | Method name derivation | Method name derivation |
 | Custom Queries | `@Query` annotation | `@query` decorator |
-| Transactions | `@Transactional` | `Session` (unit of work) |
-| Async Support | ❌ | ✅ Planned |
+| Pagination | `Pageable`, `Page<T>` | `Pageable`, `Page[T]` ✅ |
+| **Transactions & Sessions** |
+| Transactions | `@Transactional` | `Session` (unit of work) ✅ |
+| Identity Map | ✅ | ✅ (via Session) |
+| Change Tracking | ✅ | ✅ (dirty checking) |
+| **Advanced Features** |
+| Async Support | ❌ | ✅ `AsyncRepository` |
+| Index Management | Manual | `@indexed`, `@unique` ✅ |
+| Schema Validation | ❌ | ✅ `SchemaManager` |
+| Lazy Loading | ✅ | ✅ (lazy/eager) |
+| Cascade Operations | ✅ | ✅ (cascade save) |
+| **Security (v1.2.0)** |
+| RBAC | ❌ | ✅ Role-Based Access Control |
+| Entity Security | ❌ | ✅ `@secured` decorator |
+| Property Security | ❌ | ✅ Property-level controls |
+| Secure Sessions | ❌ | ✅ `SecureSession` |
+| Admin API | ❌ | ✅ `RBACManager` |
+| Audit Logging | ❌ | ✅ Complete audit trail |
+| User/Role Management | ❌ | ✅ Built-in entities |
+| Impersonation | ❌ | ✅ Testing support |
+| **Language & Ecosystem** |
+| Language | Java | Python 3.9+ |
+| Type Safety | Java generics | Python type hints |
+| Framework Integration | Spring Boot | FastAPI, Django, Flask |
 
 ## 🎯 Goals
 
