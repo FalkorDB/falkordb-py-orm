@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-11-30
+
+### Fixed
+- **Python 3.9 Compatibility**: Replace `int | None` union syntax with `Optional[int]` for Python 3.9 support
+- **Code Formatting**: Format all security module files with Black
+- **Linting**: Remove unused imports and variables from security module
+- **Test Collection**: Rename `TestPerson` to `Person` to avoid pytest collection warning
+
+### CI/CD
+- All lint checks now passing (Black, Ruff)
+- All tests passing on Python 3.9, 3.10, 3.11, 3.12
+
 ## [1.2.0] - 2025-11-29
 
 ### 🔒 Major Release - Enterprise Security (Phase 10)

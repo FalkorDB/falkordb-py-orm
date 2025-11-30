@@ -1,6 +1,6 @@
 """FalkorDB Python ORM - Object-Graph Mapping for FalkorDB."""
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 # Decorators
 from .decorators import node, property, generated_id, relationship, interned, indexed, unique
