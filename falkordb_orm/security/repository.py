@@ -18,15 +18,11 @@ class SecureRepository(Repository[T]):
         self.security_context = security_context
         self.rewriter = QueryRewriter(security_context)
 
-    def find_by_id(
-        self, entity_id: Any, fetch: Optional[List[str]] = None
-    ) -> Optional[T]:
+    def find_by_id(self, entity_id: Any, fetch: Optional[List[str]] = None) -> Optional[T]:
         """Find with security enforcement."""
         # Check READ permission
         if not self.security_context.can("READ", self.entity_class.__name__):
-            raise AccessDeniedException(
-                f"Access denied: Cannot read {self.entity_class.__name__}"
-            )
+            raise AccessDeniedException(f"Access denied: Cannot read {self.entity_class.__name__}")
 
         # Get denied properties
         denied_props = self.security_context.get_denied_properties(
@@ -46,9 +42,7 @@ class SecureRepository(Repository[T]):
         """Find all with security enforcement."""
         # Check READ permission
         if not self.security_context.can("READ", self.entity_class.__name__):
-            raise AccessDeniedException(
-                f"Access denied: Cannot read {self.entity_class.__name__}"
-            )
+            raise AccessDeniedException(f"Access denied: Cannot read {self.entity_class.__name__}")
 
         # Get denied properties
         denied_props = self.security_context.get_denied_properties(

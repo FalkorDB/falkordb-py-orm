@@ -26,9 +26,7 @@ class SecurityPolicy:
         self.graph = graph
         self.rules: List[PolicyRule] = []
 
-    def grant(
-        self, action: str, resource: str, to: str, conditions: Optional[Dict] = None
-    ):
+    def grant(self, action: str, resource: str, to: str, conditions: Optional[Dict] = None):
         """Grant privilege to role.
 
         Examples:
@@ -47,9 +45,7 @@ class SecurityPolicy:
         self.rules.append(rule)
         self._persist_rule(rule)
 
-    def deny(
-        self, action: str, resource: str, to: str, conditions: Optional[Dict] = None
-    ):
+    def deny(self, action: str, resource: str, to: str, conditions: Optional[Dict] = None):
         """Deny privilege to role."""
         rule = PolicyRule(
             action=action,
@@ -64,9 +60,7 @@ class SecurityPolicy:
     def revoke(self, action: str, resource: str, from_role: str):
         """Revoke privilege from role."""
         # Parse resource pattern
-        resource_type, resource_label, resource_property = self._parse_resource(
-            resource
-        )
+        resource_type, resource_label, resource_property = self._parse_resource(resource)
 
         # Find and delete matching privileges
         priv_repo = Repository(self.graph, Privilege)
@@ -103,11 +97,7 @@ class SecurityPolicy:
         self.rules = [
             r
             for r in self.rules
-            if not (
-                r.action == action
-                and r.resource_pattern == resource
-                and r.role == from_role
-            )
+            if not (r.action == action and r.resource_pattern == resource and r.role == from_role)
         ]
 
     def _persist_rule(self, rule: PolicyRule):

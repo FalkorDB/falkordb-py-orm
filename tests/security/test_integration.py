@@ -1,6 +1,7 @@
 """Integration tests for RBAC security."""
 
 from datetime import datetime
+from typing import Optional
 
 import pytest
 
@@ -19,16 +20,16 @@ from falkordb_orm.security import (
 
 
 # Test entities
-@node("TestPerson")
+@node("Person")
 @secured(
     read=["reader", "admin"],
     write=["editor", "admin"],
     deny_read_properties={"ssn": ["*"], "salary": ["reader"]},
 )
-class TestPerson:
+class Person:
     """Test person entity with security."""
 
-    id: int | None = generated_id()
+    id: Optional[int] = generated_id()
     name: str
     email: str
     ssn: str
@@ -45,8 +46,8 @@ def graph():
 
 def test_secured_decorator():
     """Test @secured decorator adds metadata."""
-    assert hasattr(TestPerson, "__security_metadata__")
-    metadata = TestPerson.__security_metadata__
+    assert hasattr(Person, "__security_metadata__")
+    metadata = Person.__security_metadata__
 
     assert "reader" in metadata["read_roles"]
     assert "admin" in metadata["read_roles"]
@@ -174,7 +175,7 @@ def test_multiple_decorators():
     @node("MultiSecure")
     @secured(read=["reader"], write=["editor"])
     class MultiSecure:
-        id: int | None = generated_id()
+        id: Optional[int] = generated_id()
         name: str
 
     assert hasattr(MultiSecure, "__security_metadata__")
@@ -187,7 +188,7 @@ def test_empty_security_metadata():
 
     @node("Unsecured")
     class Unsecured:
-        id: int | None = generated_id()
+        id: Optional[int] = generated_id()
         name: str
 
     # Should not have security metadata

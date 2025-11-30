@@ -33,9 +33,7 @@ class InMemoryRBACStore:
             created_at=now,
             is_immutable=True,
         )
-        self.roles["reader"] = Role(
-            name="reader", description="Read-only access", created_at=now
-        )
+        self.roles["reader"] = Role(name="reader", description="Read-only access", created_at=now)
         self.roles["editor"] = Role(
             name="editor", description="Read and write access", created_at=now
         )
@@ -44,9 +42,7 @@ class InMemoryRBACStore:
             description="Editor + schema modification",
             created_at=now,
         )
-        self.roles["admin"] = Role(
-            name="admin", description="Full access", created_at=now
-        )
+        self.roles["admin"] = Role(name="admin", description="Full access", created_at=now)
 
     def load_from_yaml(self, config_path: str):
         """Load RBAC configuration from YAML."""

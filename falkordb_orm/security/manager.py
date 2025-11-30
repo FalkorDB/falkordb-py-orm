@@ -29,9 +29,7 @@ class RBACManager:
 
     # ========== USER MANAGEMENT ==========
 
-    def create_user(
-        self, username: str, email: str, roles: Optional[List[str]] = None
-    ) -> User:
+    def create_user(self, username: str, email: str, roles: Optional[List[str]] = None) -> User:
         """Create new user with optional roles."""
         user_repo = Repository(self.graph, User)
 
@@ -291,9 +289,7 @@ class RBACManager:
         role = self.get_role(role_name)
 
         if role.is_immutable:
-            raise SecurityException(
-                f"Cannot modify privileges for immutable role '{role_name}'"
-            )
+            raise SecurityException(f"Cannot modify privileges for immutable role '{role_name}'")
 
         privilege = Privilege(
             action=action,

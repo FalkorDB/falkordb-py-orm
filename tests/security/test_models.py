@@ -73,9 +73,7 @@ def test_in_memory_store_add_role():
     """Test adding role to store."""
     store = InMemoryRBACStore()
 
-    role = Role(
-        name="analyst", description="Data analyst", created_at=datetime.now()
-    )
+    role = Role(name="analyst", description="Data analyst", created_at=datetime.now())
     store.add_role(role)
 
     assert "analyst" in store.roles

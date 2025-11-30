@@ -40,12 +40,8 @@ class ImpersonationContext:
         self.impersonate_user = impersonate_user
 
     def __enter__(self):
-        self.session.security_context = SecurityContext(
-            self.impersonate_user, self.session.graph
-        )
+        self.session.security_context = SecurityContext(self.impersonate_user, self.session.graph)
         return self.session
 
     def __exit__(self, *args):
-        self.session.security_context = SecurityContext(
-            self.original_user, self.session.graph
-        )
+        self.session.security_context = SecurityContext(self.original_user, self.session.graph)

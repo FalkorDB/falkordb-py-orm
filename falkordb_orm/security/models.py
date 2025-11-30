@@ -17,9 +17,7 @@ class Role:
     is_immutable: bool = False
 
     # Hierarchical roles
-    parent_roles: List["Role"] = relationship(
-        "INHERITS_FROM", target="Role", direction="OUTGOING"
-    )
+    parent_roles: List["Role"] = relationship("INHERITS_FROM", target="Role", direction="OUTGOING")
 
 
 @node("_Security_User")

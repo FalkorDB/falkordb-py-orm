@@ -40,9 +40,7 @@ def secured(
         cls.__security_metadata__["create_roles"] = create or []
         cls.__security_metadata__["delete_roles"] = delete or []
         cls.__security_metadata__["deny_read_properties"] = deny_read_properties or {}
-        cls.__security_metadata__["deny_write_properties"] = (
-            deny_write_properties or {}
-        )
+        cls.__security_metadata__["deny_write_properties"] = deny_write_properties or {}
 
         return cls
 
@@ -75,9 +73,7 @@ def row_level_security(filter_func: Callable):
     return decorator
 
 
-def secured_property(
-    deny_read: Optional[List[str]] = None, deny_write: Optional[List[str]] = None
-):
+def secured_property(deny_read: Optional[List[str]] = None, deny_write: Optional[List[str]] = None):
     """Property-level security decorator.
 
     Example:
