@@ -52,12 +52,24 @@ FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping fo
 - **📊 Async Derived Queries**: Auto-generated async query methods
 - **🌐 Framework Ready**: Perfect for FastAPI, aiohttp, and async Python applications
 
-### Advanced Features (v1.1.0 NEW! 🎉)
+### Advanced Features (v1.1.0)
 
 - **⚡ Transaction Support**: Context managers with identity map and change tracking
 - **🗂️ Index Management**: `@indexed` and `@unique` decorators with schema validation
 - **📄 Pagination**: Full pagination with sorting and navigation (`Pageable`, `Page[T]`)
 - **🔄 Relationship Updates**: Automatic deletion of old edges when relationships change
+
+### Security Features (v1.2.0 NEW! 🔒)
+
+- **🔐 Role-Based Access Control (RBAC)**: Enterprise-grade security with fine-grained permissions
+- **👥 User & Role Management**: Built-in user, role, and privilege entities
+- **🛡️ Declarative Security**: `@secured` decorator for entity-level access control
+- **🔑 Property-Level Security**: Control access to individual properties
+- **🔒 SecureSession**: Security-aware sessions with automatic permission enforcement
+- **👨‍💼 Admin API**: Comprehensive RBACManager for runtime administration
+- **📝 Audit Logging**: Complete audit trail for all security operations
+- **🎭 Impersonation**: Test permissions safely with context managers
+- **⚡ Performance**: <10ms overhead with intelligent privilege caching
 
 ### Production Features
 
@@ -239,6 +251,83 @@ if page.has_next():
 
 For a complete walkthrough, see [QUICKSTART.md](QUICKSTART.md).
 
+### Security Quick Start (v1.2.0)
+
+Define a secured entity:
+
+```python
+from falkordb_orm import node, generated_id
+from falkordb_orm.security import secured
+
+@node("Person")
+@secured(
+    read=["reader", "admin"],
+    write=["editor", "admin"],
+    deny_read_properties={
+        "ssn": ["*"],   # Nobody can read
+        "salary": ["reader"]  # Readers cannot read salary
+    }
+)
+class Person:
+    id: int | None = generated_id()
+    name: str
+    email: str
+    ssn: str
+    salary: float
+```
+
+Create roles, users, and grant privileges:
+
+```python
+from datetime import datetime
+from falkordb_orm.repository import Repository
+from falkordb_orm.security import Role, User, SecurityPolicy
+
+role_repo = Repository(graph, Role)
+user_repo = Repository(graph, User)
+
+reader = Role(name="reader", description="Read-only", created_at=datetime.now())
+editor = Role(name="editor", description="Edit", created_at=datetime.now())
+role_repo.save(reader)
+role_repo.save(editor)
+
+alice = User(username="alice", email="alice@example.com", created_at=datetime.now())
+alice.roles = [reader]
+user_repo.save(alice)
+
+policy = SecurityPolicy(graph)
+policy.grant("READ", "Person", to="reader")
+policy.grant("WRITE", "Person", to="editor")
+policy.deny("READ", "Person.ssn", to="reader")
+```
+
+Use SecureSession:
+
+```python
+from falkordb_orm.security import SecureSession
+
+session = SecureSession(graph, alice)
+repo = session.get_repository(Person)
+
+p = repo.find_by_id(1)
+print(p.name)     # ✓ Allowed
+print(p.ssn)      # None (filtered)
+```
+
+Admin API example:
+
+```python
+from falkordb_orm.security import RBACManager
+
+admin_session = SecureSession(graph, admin_user)
+rbac = RBACManager(graph, admin_session.security_context)
+
+rbac.create_user("bob", "bob@example.com", roles=["editor"])  # create
+rbac.assign_role("alice", "editor")                              # assign
+rbac.grant_privilege("editor", "WRITE", "NODE", "Document")     # grant
+logs = rbac.query_audit_logs(limit=10)                            # audit
+```
+
 ### Custom Queries (Phase 4)
 
 ```python
@@ -325,8 +414,10 @@ for person in adults:
 - **[API Reference](docs/api/)** - Complete API documentation
   - [Decorators](docs/api/decorators.md) - `@node`, `property()`, `relationship()`
   - [Repository](docs/api/repository.md) - `Repository` and `AsyncRepository`
+- **[Security Module](falkordb_orm/security/README.md)** - Complete RBAC security guide (v1.2.0)
 - **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Migrating from raw FalkorDB client
 - **[Examples](examples/)** - Complete working examples
+  - [Security Examples](examples/security/) - RBAC and admin API examples
 - **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
 
 ## 🤝 Comparison with Spring Data FalkorDB
