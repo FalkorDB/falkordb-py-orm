@@ -2,7 +2,15 @@
 
 from typing import Optional
 
-from falkordb_orm.decorators import node, property, generated_id
+from falkordb_orm.decorators import (
+    generated_id,
+    indexed,
+    interned,
+    node,
+    property,
+    relationship,
+    unique,
+)
 from falkordb_orm.metadata import get_entity_metadata
 
 
@@ -20,6 +28,18 @@ def test_node_decorator_with_string_label():
     assert metadata.labels == ["Person"]
     assert metadata.primary_label == "Person"
     assert len(metadata.properties) == 3
+
+
+def test_node_has_dataclass_transform_metadata():
+    """Test @node exposes dataclass transform metadata for static type checkers."""
+    transform = getattr(node, "__dataclass_transform__", None)
+
+    assert transform is not None
+    assert transform["kw_only_default"] is True
+
+    field_specifiers = transform["field_specifiers"]
+    expected_specifiers = {property, interned, indexed, unique, generated_id, relationship}
+    assert set(field_specifiers) == expected_specifiers
 
 
 def test_node_decorator_with_list_labels():

@@ -14,6 +14,11 @@ from typing import (
     get_args,
 )
 
+try:
+    from typing import dataclass_transform
+except ImportError:  # Python < 3.11
+    from typing_extensions import dataclass_transform
+
 from .exceptions import InvalidEntityException
 from .metadata import EntityMetadata, PropertyMetadata, RelationshipMetadata
 
@@ -328,6 +333,10 @@ def relationship(
     )
 
 
+@dataclass_transform(
+    field_specifiers=(property, interned, indexed, unique, generated_id, relationship),
+    kw_only_default=True,
+)
 def node(
     labels: Optional[Union[str, List[str]]] = None, primary_label: Optional[str] = None
 ) -> Callable[[Type[T]], Type[T]]:

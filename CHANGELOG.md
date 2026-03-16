@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-03-16
+
+### Fixed
+- **Static Typing (Pylance/Pyright)**: Added `dataclass_transform` metadata to `@node` so constructor keyword arguments are inferred correctly for decorated entity classes.
+- **Typing Regression Coverage**: Added test coverage to lock in `@node` dataclass-transform metadata and field specifier behavior.
+- **Documentation**: Updated decorators API docs with static type-checking behavior for `@node`.
+
+### CI/CD
+- **Python 3.9 Test Matrix Stability**: Pinned Poetry in test workflow to a Python 3.9-compatible version (`1.8.4`) to prevent installer failures.
+
 ## [1.2.1] - 2025-11-30
 
 ### Fixed

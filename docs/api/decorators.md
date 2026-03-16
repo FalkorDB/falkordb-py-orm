@@ -34,6 +34,23 @@ def node(
 ### Returns
 
 The decorated class with metadata attached.
+### Static Type Checking
+
+`@node` is annotated with `dataclass_transform` metadata so static analyzers
+(such as Pylance, Pyright, and mypy) can infer constructor arguments from class
+annotations even though the runtime `__init__` is generated dynamically.
+
+Constructor arguments are intended to be passed as keyword arguments, which
+matches the generated runtime behavior.
+
+The following helper functions are treated as field specifiers for static
+analysis:
+- `property()`
+- `interned()`
+- `indexed()`
+- `unique()`
+- `generated_id()`
+- `relationship()`
 
 ### Examples
 
