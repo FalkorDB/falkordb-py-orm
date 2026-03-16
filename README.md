@@ -420,45 +420,29 @@ for person in adults:
   - [Security Examples](examples/security/) - RBAC and admin API examples
 - **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
 
-## 🤝 Comparison with Spring Data FalkorDB
+## 🤝 Comparison with other FalkorDB ORM solutions
 
-This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/spring-data-falkordb), bringing similar patterns to Python:
+This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/spring-data-falkordb) and aligned with the broader FalkorDB ORM ecosystem, including [falkordb-go-orm](https://github.com/FalkorDB/falkordb-go-orm).
 
-| Feature | Spring Data FalkorDB | falkordb-orm (v1.2.0) |
-|---------|---------------------|------------------------|
-| **Core Mapping** |
-| Entity Mapping | `@Node` annotation | `@node` decorator |
-| Property Mapping | `@Property` | `property()` function |
-| Relationships | `@Relationship` | `relationship()` function |
-| ID Generation | `@GeneratedValue` | `generated_id()` |
-| **Repository Pattern** |
-| Repository | `FalkorDBRepository<T, ID>` | `Repository[T]` |
-| Query Methods | Method name derivation | Method name derivation |
-| Custom Queries | `@Query` annotation | `@query` decorator |
-| Pagination | `Pageable`, `Page<T>` | `Pageable`, `Page[T]` ✅ |
-| **Transactions & Sessions** |
-| Transactions | `@Transactional` | `Session` (unit of work) ✅ |
-| Identity Map | ✅ | ✅ (via Session) |
-| Change Tracking | ✅ | ✅ (dirty checking) |
-| **Advanced Features** |
-| Async Support | ❌ | ✅ `AsyncRepository` |
-| Index Management | Manual | `@indexed`, `@unique` ✅ |
-| Schema Validation | ❌ | ✅ `SchemaManager` |
-| Lazy Loading | ✅ | ✅ (lazy/eager) |
-| Cascade Operations | ✅ | ✅ (cascade save) |
-| **Security (v1.2.0)** |
-| RBAC | ❌ | ✅ Role-Based Access Control |
-| Entity Security | ❌ | ✅ `@secured` decorator |
-| Property Security | ❌ | ✅ Property-level controls |
-| Secure Sessions | ❌ | ✅ `SecureSession` |
-| Admin API | ❌ | ✅ `RBACManager` |
-| Audit Logging | ❌ | ✅ Complete audit trail |
-| User/Role Management | ❌ | ✅ Built-in entities |
-| Impersonation | ❌ | ✅ Testing support |
-| **Language & Ecosystem** |
-| Language | Java | Python 3.9+ |
-| Type Safety | Java generics | Python type hints |
-| Framework Integration | Spring Boot | FastAPI, Django, Flask |
+| Capability | `spring-data-falkordb` | `falkordb-go-orm` | `falkordb-orm` (Python v1.2.2) |
+|-----------|-------------------------|-------------------|---------------------------------|
+| Entity mapping | `@Node`, `@Property`, `@Relationship`, `@Id` | Struct tags (`falkor:"..."`) + `Labels()` | `@node`, `property()`, `relationship()`, `generated_id()` |
+| Repository abstraction | `FalkorDBRepository<T, ID>` | `Repository[T]` | `Repository[T]`, `AsyncRepository[T]` |
+| Derived query methods | ✅ Spring Data method derivation | ✅ Method-name parsing (`ExecuteDerivedQuery`) | ✅ Method-name derivation |
+| Custom queries | ✅ `@Query` | ✅ Fluent `QueryBuilder` / Cypher | ✅ `@query` |
+| Pagination | ✅ `Pageable`, `Page<T>` | ✅ `Pageable`, `Page[T]` | ✅ `Pageable`, `Page[T]` |
+| Relationship support | ⚠️ Mapping supported; automatic relationship persistence marked in progress | ✅ `RelationshipManager` + lazy relationship wrappers | ✅ Lazy/eager loading + cascade save |
+| Session / transactions | ⚠️ `@Transactional` support documented; full transaction integration marked in progress | ✅ `Session` API | ✅ `Session`, `AsyncSession` |
+| Index management | ⚠️ No dedicated index manager documented | ✅ `IndexManager` | ✅ `@indexed`, `@unique`, `IndexManager` |
+| Schema validation/sync | ⚠️ No dedicated schema manager documented | ✅ `SchemaManager` | ✅ `SchemaManager` |
+| RBAC / security | ⚠️ Optional/experimental (`@Secured`, row-level security) | ✅ Optional `security` package (action, property, row-level metadata) | ✅ Built-in RBAC module (`@secured`, `SecureSession`, `RBACManager`) |
+| Async model | ❌ | ➖ Go concurrency model (no async repository abstraction) | ✅ Async repositories/sessions |
+| Framework integration | ✅ Spring Boot starter + auto-configuration | ➖ Framework-agnostic Go library | ➖ Framework-agnostic Python library (examples with FastAPI/Flask patterns) |
+| Language/runtime | Java 17+ | Go 1.21+ | Python 3.9+ |
+
+Notes:
+- Spring Data statuses above reflect its own README implementation notes (including items explicitly marked “in progress” and “experimental”).
+- Go ORM statuses reflect `README.md` and `API.md` in `../falkordb-go-orm`.
 
 ## 🎯 Goals
 
@@ -470,7 +454,7 @@ This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/s
 
 ## 🔧 Technology Stack
 
-- **Python**: 3.8+
+- **Python**: 3.9+
 - **FalkorDB Client**: [falkordb-py](https://github.com/FalkorDB/falkordb-py)
 - **Type Hints**: For IDE support and validation
 - **Decorators**: For entity and query definition
