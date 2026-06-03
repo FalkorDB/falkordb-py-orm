@@ -1,4 +1,4 @@
-Welcome to FalkorDB ORM
+Welcome to FalkorDB Python ORM
 ==============================
 
 |PyPI| |Python| |License|
