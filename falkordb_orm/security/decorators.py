@@ -13,7 +13,8 @@ def secured(
 ):
     """Decorator to add security metadata to entity class.
 
-    Examples:
+    Examples::
+
         @node("Person")
         @secured(
             read=["reader", "admin"],
@@ -50,7 +51,8 @@ def secured(
 def row_level_security(filter_func: Callable):
     """Decorator for row-level security filtering.
 
-    Example:
+    Example::
+
         @node("Document")
         @row_level_security(
             filter_func=lambda user, doc: (
@@ -76,7 +78,7 @@ def row_level_security(filter_func: Callable):
 def secured_property(deny_read: Optional[List[str]] = None, deny_write: Optional[List[str]] = None):
     """Property-level security decorator.
 
-    Example:
+    Example::
         class Person:
             ssn: str = secured_property(deny_read=['reader', 'analyst'])
             salary: float = secured_property(deny_write=['viewer'])

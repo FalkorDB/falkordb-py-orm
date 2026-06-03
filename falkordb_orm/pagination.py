@@ -17,7 +17,7 @@ class Pageable:
         sort_by: Optional property name to sort by
         direction: Sort direction ('ASC' or 'DESC')
 
-    Example:
+    Example::
         >>> pageable = Pageable(page=0, size=10, sort_by="name", direction="ASC")
         >>> page = repo.find_all_paginated(pageable)
     """
@@ -97,7 +97,7 @@ class Page(Generic[T]):
         total_elements: Total number of items across all pages
         total_pages: Total number of pages (calculated)
 
-    Example:
+    Example::
         >>> page = repo.find_all_paginated(Pageable(page=0, size=10))
         >>> print(f"Page {page.page_number + 1} of {page.total_pages}")
         >>> print(f"Showing {len(page.content)} of {page.total_elements} items")

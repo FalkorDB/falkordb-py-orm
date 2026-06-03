@@ -22,7 +22,7 @@ class AsyncSession:
     - Unit of work pattern
     - Async/await support
 
-    Example:
+    Example:::
         >>> async with AsyncSession(graph) as session:
         ...     # Add new entities
         ...     person = Person(name="Alice", age=25)
@@ -90,7 +90,7 @@ class AsyncSession:
         Args:
             entity: Entity instance to add
 
-        Example:
+        Example::
             >>> person = Person(name="Alice", age=25)
             >>> session.add(person)
             >>> await session.commit()  # INSERT executed here
@@ -115,7 +115,7 @@ class AsyncSession:
         Args:
             entity: Entity instance to delete
 
-        Example:
+        Example::
             >>> person = await session.get(Person, 1)
             >>> session.delete(person)
             >>> await session.commit()  # DELETE executed here
@@ -149,7 +149,7 @@ class AsyncSession:
         Returns:
             Entity instance if found, None otherwise
 
-        Example:
+        Example::
             >>> person = await session.get(Person, 1)
             >>> # Subsequent calls return same instance
             >>> same_person = await session.get(Person, 1)
@@ -197,7 +197,7 @@ class AsyncSession:
         2. UPDATEs for dirty entities
         3. DELETEs for deleted entities
 
-        Example:
+        Example::
             >>> session.add(person1)
             >>> await session.flush()  # Execute INSERT
             >>> session.add(person2)
@@ -232,7 +232,7 @@ class AsyncSession:
         """
         Flush changes and commit transaction.
 
-        Example:
+        Example::
             >>> async with AsyncSession(graph) as session:
             ...     session.add(person)
             ...     await session.commit()  # Changes persisted
@@ -248,7 +248,7 @@ class AsyncSession:
         """
         Discard all pending changes.
 
-        Example:
+        Example::
             >>> session.add(person)
             >>> await session.rollback()  # Changes discarded
             >>> # person not saved to database
@@ -271,7 +271,7 @@ class AsyncSession:
         """
         Close session and release resources.
 
-        Example:
+        Example::
             >>> session = AsyncSession(graph)
             >>> try:
             ...     session.add(person)

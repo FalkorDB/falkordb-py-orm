@@ -27,7 +27,7 @@ class FalkorDBORMException(Exception):
 class EntityNotFoundException(FalkorDBORMException):
     """Raised when an entity is not found in the database.
 
-    Example:
+    Example::
         >>> raise EntityNotFoundException(
         ...     "Person with id 123 not found",
         ...     {"entity_type": "Person", "id": 123}
@@ -49,7 +49,7 @@ class EntityNotFoundException(FalkorDBORMException):
 class InvalidEntityException(FalkorDBORMException):
     """Raised when an entity is invalid or improperly configured.
 
-    Example:
+    Example::
         >>> raise InvalidEntityException(
         ...     "Entity missing required field 'name'",
         ...     {"entity_type": "Person", "field": "name"}
@@ -62,7 +62,7 @@ class InvalidEntityException(FalkorDBORMException):
 class MappingException(FalkorDBORMException):
     """Raised when there's an error mapping between entities and graph structures.
 
-    Example:
+    Example::
         >>> raise MappingException(
         ...     "Cannot convert value to target type",
         ...     {"field": "age", "value": "invalid", "target_type": "int"}
@@ -75,7 +75,7 @@ class MappingException(FalkorDBORMException):
 class QueryException(FalkorDBORMException):
     """Raised when there's an error building or executing a query.
 
-    Example:
+    Example::
         >>> raise QueryException(
         ...     "Invalid query method name",
         ...     {"method_name": "find_by_invalid_field", "cypher": "..."}
@@ -97,7 +97,7 @@ class QueryException(FalkorDBORMException):
 class MetadataException(FalkorDBORMException):
     """Raised when there's an error with entity metadata.
 
-    Example:
+    Example::
         >>> raise MetadataException(
         ...     "Entity class not decorated with @node",
         ...     {"class_name": "Person"}
@@ -110,7 +110,7 @@ class MetadataException(FalkorDBORMException):
 class ValidationException(FalkorDBORMException):
     """Raised when entity validation fails.
 
-    Example:
+    Example::
         >>> raise ValidationException(
         ...     "Field validation failed",
         ...     {"field": "email", "value": "invalid", "constraint": "email format"}
@@ -123,7 +123,7 @@ class ValidationException(FalkorDBORMException):
 class RelationshipException(FalkorDBORMException):
     """Raised when there's an error with relationship operations.
 
-    Example:
+    Example::
         >>> raise RelationshipException(
         ...     "Cannot load relationship",
         ...     {"relationship": "friends", "source_id": 123}
@@ -136,7 +136,7 @@ class RelationshipException(FalkorDBORMException):
 class ConfigurationException(FalkorDBORMException):
     """Raised when there's an error with ORM configuration.
 
-    Example:
+    Example::
         >>> raise ConfigurationException(
         ...     "Invalid relationship direction",
         ...     {"direction": "INVALID", "valid_values": ["INCOMING", "OUTGOING", "BOTH"]}
@@ -149,7 +149,7 @@ class ConfigurationException(FalkorDBORMException):
 class TransactionException(FalkorDBORMException):
     """Raised when there's an error with transaction operations.
 
-    Example:
+    Example::
         >>> raise TransactionException(
         ...     "Transaction already committed",
         ...     {"transaction_id": "abc123"}

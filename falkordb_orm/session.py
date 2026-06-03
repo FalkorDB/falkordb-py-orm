@@ -21,7 +21,7 @@ class Session:
     - Transaction management with commit/rollback
     - Unit of work pattern
 
-    Example:
+    Example::
         >>> with Session(graph) as session:
         ...     # Add new entities
         ...     person = Person(name="Alice", age=25)
@@ -90,7 +90,7 @@ class Session:
         Args:
             entity: Entity instance to add
 
-        Example:
+        Example::
             >>> person = Person(name="Alice", age=25)
             >>> session.add(person)
             >>> session.commit()  # INSERT executed here
@@ -115,7 +115,7 @@ class Session:
         Args:
             entity: Entity instance to delete
 
-        Example:
+        Example::
             >>> person = session.get(Person, 1)
             >>> session.delete(person)
             >>> session.commit()  # DELETE executed here
@@ -149,7 +149,7 @@ class Session:
         Returns:
             Entity instance if found, None otherwise
 
-        Example:
+        Example::
             >>> person = session.get(Person, 1)
             >>> # Subsequent calls return same instance
             >>> same_person = session.get(Person, 1)
@@ -197,7 +197,7 @@ class Session:
         2. UPDATEs for dirty entities
         3. DELETEs for deleted entities
 
-        Example:
+        Example::
             >>> session.add(person1)
             >>> session.flush()  # Execute INSERT
             >>> session.add(person2)
@@ -232,7 +232,7 @@ class Session:
         """
         Flush changes and commit transaction.
 
-        Example:
+        Example::
             >>> with Session(graph) as session:
             ...     session.add(person)
             ...     session.commit()  # Changes persisted
@@ -248,7 +248,7 @@ class Session:
         """
         Discard all pending changes.
 
-        Example:
+        Example::
             >>> session.add(person)
             >>> session.rollback()  # Changes discarded
             >>> # person not saved to database
@@ -271,7 +271,7 @@ class Session:
         """
         Close session and release resources.
 
-        Example:
+        Example::
             >>> session = Session(graph)
             >>> try:
             ...     session.add(person)
