@@ -21,10 +21,10 @@ classifiers = [
     "Topic :: Database",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-packages = [{include = "falkordb_orm"}]
+packages = [{ include = "falkordb_orm" }]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
 falkordb = "^1.0.0"
 typing-extensions = "^4.0"
 
@@ -34,6 +34,13 @@ pytest-cov = "^4.0"
 black = "^23.0"
 mypy = "^1.0"
 ruff = "^0.1"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = ">=8.2.3"
+furo = ">=2024.8"
+sphinx-autodoc-typehints = ">=3.0"
+sphinx-copybutton = "^0.5"
+myst-parser = "^5.1.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -47,14 +54,14 @@ python_functions = "test_*"
 
 [tool.black]
 line-length = 100
-target-version = ['py39']
+target-version = ['py311']
 
 [tool.ruff]
 line-length = 100
-target-version = "py39"
+target-version = "py311"
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 warn_return_any = false
 warn_unused_configs = true
 disallow_untyped_defs = false
