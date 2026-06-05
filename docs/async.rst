@@ -311,7 +311,7 @@ startup, store it in ``app.state``, and open a fresh ``AsyncRepository`` (or
        return await repo.save(article)
 
 
-   `@app.patch`("/articles/{article_id}/publish", response_model=ArticleOut)
+   @app.patch("/articles/{article_id}/publish", response_model=ArticleOut)
    async def publish_article(article_id: int, session: Sess):
        article = await session.get(Article, article_id)
        if article is None:
