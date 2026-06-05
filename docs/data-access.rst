@@ -54,11 +54,11 @@ entity is returned with the FalkorDB node id populated.
 .. code-block:: python
 
    alice = Person(name="Alice", email="alice@example.com", age=30)
-  saved = people.save(alice)
-  print(saved.id)
+   saved = people.save(alice)
+   print(saved.id)
 
-  saved.age = 31
-  people.save(saved)
+   saved.age = 31
+   people.save(saved)
 
 Relationship persistence runs after the node is saved. If a relationship is set
 and declared with ``cascade=True``, unsaved related entities are saved before the

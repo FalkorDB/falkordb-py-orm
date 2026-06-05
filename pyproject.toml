@@ -29,16 +29,16 @@ falkordb = "^1.0.0"
 typing-extensions = "^4.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.0"
+pytest = "^7.4.4"
 pytest-cov = "^4.0"
 black = "^23.0"
 mypy = "^1.0"
 ruff = "^0.1"
 
 [tool.poetry.group.docs.dependencies]
-sphinx = ">7.4"
-furo = "^2024.8"
-sphinx-autodoc-typehints = "^2.2"
+sphinx = "^7.4.7"
+furo = "^2025.12.19"
+sphinx-autodoc-typehints = "^2.3.0"
 sphinx-copybutton = "^0.5"
 myst-parser = "^3.0"
 

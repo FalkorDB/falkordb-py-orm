@@ -40,7 +40,7 @@ should participate in several graph categories.
 
    @node(labels=["Person", "Employee", "Manager"])
    class Manager:
-       id: int | None = generated_id()
+       id: Optional[int] = generated_id()
        name: str
        department: str
 

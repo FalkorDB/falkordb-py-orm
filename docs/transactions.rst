@@ -191,13 +191,13 @@ Async sessions
 .. code-block:: python
 
    import asyncio
-   import falkordb
+   from falkordb.asyncio import FalkorDB
    from falkordb_orm import AsyncSession
    from myapp.models import Person
 
    async def main():
-       db    = falkordb.FalkorDB(host="localhost", port=6379)
-       graph = await db.select_graph("myapp")
+       db    = FalkorDB(host="localhost", port=6379)
+       graph = db.select_graph("myapp")
 
        async with AsyncSession(graph) as session:
            alice = Person(name="Alice", age=30)
@@ -221,7 +221,7 @@ Explicit async flush and rollback:
            src.balance -= amount
            dst.balance += amount
            session._dirty.update([src, dst])
-           # commit() fires both UPDATEs atomically within the flush cycle
+           # commit() flushes both UPDATEs as individually auto-committed queries
 
 Async manual control follows the same pattern as the sync version:
 
