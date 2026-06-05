@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+
+# When building on ReadTheDocs, load the RTD extension so the
+# version/language flyout is properly injected into the page.
+on_rtd = os.environ.get("READTHEDOCS", "False") == "True"
 
 project = "FalkorDB Python ORM"
 author = "FalkorDB Team"
@@ -23,6 +28,9 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
 ]
+
+if on_rtd:
+    extensions.append("readthedocs_ext.readthedocs")
 
 templates_path = ["_templates"]
 exclude_patterns = [
