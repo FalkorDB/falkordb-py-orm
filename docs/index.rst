@@ -8,7 +8,7 @@ Welcome to FalkorDB Python ORM
    :target: https://pypi.org/project/falkordb-orm/
    :alt: PyPI
 
-.. |Python| image:: https://img.shields.io/badge/python-3.11%2B-orange.svg
+.. |Python| image:: https://img.shields.io/badge/python-3.9%2B-orange.svg
    :target: https://www.python.org
    :alt: Python Support
 
