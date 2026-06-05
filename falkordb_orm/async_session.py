@@ -22,7 +22,7 @@ class AsyncSession:
     - Unit of work pattern
     - Async/await support
 
-    Example:::
+    Example::
         >>> async with AsyncSession(graph) as session:
         ...     # Add new entities
         ...     person = Person(name="Alice", age=25)
