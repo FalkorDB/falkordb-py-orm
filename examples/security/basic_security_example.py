@@ -51,14 +51,10 @@ def main():
     )
     role_repo.save(admin_role)
 
-    reader_role = Role(
-        name="reader", description="Read-only role", created_at=datetime.now()
-    )
+    reader_role = Role(name="reader", description="Read-only role", created_at=datetime.now())
     role_repo.save(reader_role)
 
-    editor_role = Role(
-        name="editor", description="Edit role", created_at=datetime.now()
-    )
+    editor_role = Role(name="editor", description="Edit role", created_at=datetime.now())
     role_repo.save(editor_role)
 
     # Grant privileges

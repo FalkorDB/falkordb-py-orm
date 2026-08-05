@@ -496,6 +496,7 @@ def node(
                     python_type=python_type,
                     is_id=True,
                     id_generator=attr_value.generator,
+                    is_generated=True,
                 )
                 properties.append(prop_meta)
                 id_property = prop_meta
