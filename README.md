@@ -52,14 +52,14 @@ FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping fo
 - **📊 Async Derived Queries**: Auto-generated async query methods
 - **🌐 Framework Ready**: Perfect for FastAPI, aiohttp, and async Python applications
 
-### Advanced Features (v1.1.0)
+### Advanced Features
 
 - **⚡ Transaction Support**: Context managers with identity map and change tracking
 - **🗂️ Index Management**: `@indexed` and `@unique` decorators with schema validation
 - **📄 Pagination**: Full pagination with sorting and navigation (`Pageable`, `Page[T]`)
 - **🔄 Relationship Updates**: Automatic deletion of old edges when relationships change
 
-### Security Features (v1.2.0 NEW! 🔒)
+### Security Features 🔒
 
 - **🔐 Role-Based Access Control (RBAC)**: Enterprise-grade security with fine-grained permissions
 - **👥 User & Role Management**: Built-in user, role, and privilege entities
@@ -79,7 +79,7 @@ FalkorDB Python ORM provides intuitive, annotation-based object-graph mapping fo
 - **💾 Memory Optimization**: Interned strings for repeated values with `@interned` decorator
 - **🧪 Integration Tests**: Full end-to-end tests with real FalkorDB
 
-### 📋 Future Enhancements (Optional)
+### 📋 Future Enhancements
 
 - **📦 Migration System**: Schema version management and migrations
 - **🔍 Query Result Caching**: Result caching for performance
@@ -142,7 +142,7 @@ employee = Employee(name="Bob", company=company)
 repo.save(employee)  # Company automatically saved!
 ```
 
-### Async Usage (Phase 5)
+### Async Usage
 
 ```python
 import asyncio
@@ -182,7 +182,7 @@ async def main():
 asyncio.run(main())
 ```
 
-### Transaction Support (v1.1.0 NEW!)
+### Transaction Support
 
 ```python
 from falkordb_orm import Session
@@ -202,7 +202,7 @@ with Session(graph) as session:
     session.commit()
 ```
 
-### Index Management (v1.1.0 NEW!)
+### Index Management
 
 ```python
 from falkordb_orm import node, indexed, unique, IndexManager
@@ -225,7 +225,7 @@ if not result.is_valid:
     schema_manager.sync_schema([User, Product])
 ```
 
-### Pagination (v1.1.0 NEW!)
+### Pagination
 
 ```python
 from falkordb_orm import Pageable
@@ -251,7 +251,7 @@ if page.has_next():
 
 For a complete walkthrough, see [QUICKSTART.md](QUICKSTART.md).
 
-### Security Quick Start (v1.2.0)
+### Security Quick Start
 
 Define a secured entity:
 
@@ -328,7 +328,7 @@ rbac.grant_privilege("editor", "WRITE", "NODE", "Document")     # grant
 logs = rbac.query_audit_logs(limit=10)                            # audit
 ```
 
-### Custom Queries (Phase 4)
+### Custom Queries
 
 ```python
 from falkordb_orm import query
@@ -377,7 +377,7 @@ for record in result.result_set:
     print(person.properties['name'])
 ```
 
-### After (ORM - Planned)
+### After (ORM)
 
 ```python
 from falkordb import FalkorDB
@@ -409,22 +409,29 @@ for person in adults:
 
 ## 📚 Documentation
 
+The full Sphinx documentation can be browsed locally. To build the HTML docs:
+
+```bash
+poetry install --with docs
+poetry run sphinx-build -W -b html docs docs/_build/html
+```
+
+After building, open `docs/_build/html/index.html` in your browser. Key documentation sections include:
+
 - **[Quick Start Guide](QUICKSTART.md)** - Get started in minutes
-- **[Design Document](DESIGN.md)** - Comprehensive design and architecture
-- **[API Reference](docs/api/)** - Complete API documentation
-  - [Decorators](docs/api/decorators.md) - `@node`, `property()`, `relationship()`
-  - [Repository](docs/api/repository.md) - `Repository` and `AsyncRepository`
-- **[Security Module](falkordb_orm/security/README.md)** - Complete RBAC security guide (v1.2.0)
-- **[Migration Guide](docs/MIGRATION_GUIDE.md)** - Migrating from raw FalkorDB client
-- **[Examples](examples/)** - Complete working examples
-  - [Security Examples](examples/security/) - RBAC and admin API examples
-- **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
+- **[Design Document](DESIGN.md)** - Architecture, metadata, and mapping patterns
+- **[Core Concepts](docs/core-concepts.rst)** - Node mapping, property mappings, and relationships
+- **[Data Access](docs/data-access.rst)** - Repositories, derived queries, and custom Cypher
+- **[Transactions & Sessions](docs/transactions.rst)** - Identity maps, dirty tracking, and unit of work
+- **[Security & RBAC](docs/security.rst)** - Enterprise-grade access control, secure sessions, and audit logging
+- **[Asynchronous Support](docs/async.rst)** - Non-blocking repository operations and async lazy loading
+- **[Migration Guide](docs/migration-guide.rst)** - Migrating from the raw FalkorDB client
 
 ## 🤝 Comparison with other FalkorDB ORM solutions
 
 This project is inspired by [Spring Data FalkorDB](https://github.com/FalkorDB/spring-data-falkordb) and aligned with the broader FalkorDB ORM ecosystem, including [falkordb-go-orm](https://github.com/FalkorDB/falkordb-go-orm).
 
-| Capability | `spring-data-falkordb` | `falkordb-go-orm` | `falkordb-orm` (Python v1.2.2) |
+| Capability | `spring-data-falkordb` | `falkordb-go-orm` | `falkordb-orm` (Python) |
 |-----------|-------------------------|-------------------|---------------------------------|
 | Entity mapping | `@Node`, `@Property`, `@Relationship`, `@Id` | Struct tags (`falkor:"..."`) + `Labels()` | `@node`, `property()`, `relationship()`, `generated_id()` |
 | Repository abstraction | `FalkorDBRepository<T, ID>` | `Repository[T]` | `Repository[T]`, `AsyncRepository[T]` |
