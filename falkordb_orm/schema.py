@@ -54,7 +54,7 @@ class SchemaManager:
 
     Provides schema validation, synchronization, and migration capabilities.
 
-    Example:
+    Example::
         >>> from falkordb_orm import SchemaManager
         >>>
         >>> manager = SchemaManager(graph)
@@ -92,7 +92,7 @@ class SchemaManager:
         Returns:
             SchemaValidationResult with validation details
 
-        Example:
+        Example::
             >>> result = manager.validate_schema([Person, Company])
             >>> if not result.is_valid:
             ...     print(result)
@@ -176,7 +176,7 @@ class SchemaManager:
         Returns:
             Dictionary with counts: {'created': N, 'dropped': M}
 
-        Example:
+        Example::
             >>> stats = manager.sync_schema([Person, Company])
             >>> print(f"Created {stats['created']} indexes")
         """
@@ -220,7 +220,7 @@ class SchemaManager:
         Returns:
             Formatted string describing schema differences
 
-        Example:
+        Example::
             >>> print(manager.get_schema_diff([Person, Company]))
         """
         result = self.validate_schema(entity_classes)
@@ -235,7 +235,7 @@ class SchemaManager:
         Args:
             entity_classes: List of entity classes to ensure
 
-        Example:
+        Example::
             >>> manager.ensure_schema([Person, Company])
         """
         self.sync_schema(entity_classes, drop_extra=False)
@@ -250,7 +250,7 @@ class SchemaManager:
         Returns:
             Dictionary with schema details
 
-        Example:
+        Example::
             >>> info = manager.get_schema_info([Person, Company])
             >>> print(f"Total entities: {info['entity_count']}")
             >>> print(f"Total indexes: {info['total_indexes']}")

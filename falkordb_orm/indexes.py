@@ -31,7 +31,7 @@ class IndexManager:
     Provides methods to create, drop, and list indexes based on entity metadata.
     Supports RANGE, FULLTEXT, and VECTOR indexes, as well as unique constraints.
 
-    Example:
+    Example::
         >>> from falkordb_orm import IndexManager
         >>>
         >>> manager = IndexManager(graph)
@@ -69,7 +69,7 @@ class IndexManager:
         Raises:
             QueryException: If index creation fails
 
-        Example:
+        Example::
             >>> manager.create_indexes(Person)
             ['CREATE INDEX FOR (n:Person) ON (n.email)', ...]
         """
@@ -120,7 +120,7 @@ class IndexManager:
         Raises:
             QueryException: If index dropping fails
 
-        Example:
+        Example::
             >>> manager.drop_indexes(Person)
             ['DROP INDEX ON :Person(email)', ...]
         """
@@ -157,7 +157,7 @@ class IndexManager:
         Returns:
             List of Cypher queries executed
 
-        Example:
+        Example::
             >>> manager.ensure_indexes(Person)
         """
         return self.create_indexes(entity_class, if_not_exists=True)
@@ -172,7 +172,7 @@ class IndexManager:
         Returns:
             List of IndexInfo objects
 
-        Example:
+        Example::
             >>> indexes = manager.list_indexes(Person)
             >>> for idx in indexes:
             ...     print(f"{idx.label}.{idx.property_name}: {idx.index_type}")
@@ -276,7 +276,7 @@ class IndexManager:
         Returns:
             Cypher query executed
 
-        Example:
+        Example::
             >>> manager.create_index_for_property("Person", "email", unique=True)
         """
         if unique:
@@ -301,7 +301,7 @@ class IndexManager:
         Returns:
             Cypher query executed
 
-        Example:
+        Example::
             >>> manager.drop_index_for_property("Person", "email")
         """
         query = f"DROP INDEX ON :{label}({property_name})"

@@ -29,11 +29,12 @@ class SecurityPolicy:
     def grant(self, action: str, resource: str, to: str, conditions: Optional[Dict] = None):
         """Grant privilege to role.
 
-        Examples:
+        Examples::
+
             policy.grant('READ', 'Person', to='reader')
             policy.grant('READ', 'Person.name', to='analyst')
             policy.grant('WRITE', 'Document', to='editor',
-                        conditions={'owner_id': '{{user.id}}'})
+                         conditions={'owner_id': '{{user.id}}'})
         """
         rule = PolicyRule(
             action=action,

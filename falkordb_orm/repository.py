@@ -394,7 +394,7 @@ class Repository(Generic[T]):
         Raises:
             QueryException: If query execution fails
 
-        Example:
+        Example::
             >>> pageable = Pageable(page=0, size=10, sort_by="name", direction="ASC")
             >>> page = repo.find_all_paginated(pageable)
             >>> print(f"Page {page.page_number + 1} of {page.total_pages}")

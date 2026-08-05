@@ -183,7 +183,7 @@ def query(
     Returns:
         Decorated method that executes custom query
 
-    Example:
+    Example::
         >>> class PersonRepository(Repository[Person]):
         ...     @query(
         ...         "MATCH (p:Person)-[:KNOWS]->(f:Person) WHERE p.name = $name RETURN f",

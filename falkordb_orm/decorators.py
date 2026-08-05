@@ -142,7 +142,7 @@ def property(
     Returns:
         Property descriptor
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     name: str = property("full_name")
@@ -177,7 +177,7 @@ def interned(name: Optional[str] = None, required: bool = False) -> Any:
     Returns:
         Property descriptor with interned=True
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = None
@@ -212,7 +212,7 @@ def indexed(
     Returns:
         Property descriptor with indexed=True
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = generated_id()
@@ -254,7 +254,7 @@ def unique(
     Returns:
         Property descriptor with unique=True
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = generated_id()
@@ -287,7 +287,7 @@ def generated_id(generator: Optional[Callable] = None) -> Any:
     Returns:
         Generated ID descriptor
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = generated_id()
@@ -316,7 +316,7 @@ def relationship(
     Returns:
         Relationship descriptor
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = generated_id()
@@ -350,7 +350,7 @@ def node(
     Returns:
         Decorated class with entity metadata
 
-    Example:
+    Example::
         >>> @node("Person")
         >>> class Person:
         ...     id: Optional[int] = None
