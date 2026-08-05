@@ -32,6 +32,9 @@ class PropertyMetadata:
     id_generator: Optional[Callable] = None
     """Optional ID generator function for auto-generated IDs."""
 
+    is_generated: bool = False
+    """Whether this property is an auto-generated ID field."""
+
     interned: bool = False
     """Whether this string property should use FalkorDB's intern() function for deduplication."""
 

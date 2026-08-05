@@ -72,8 +72,16 @@ class EntityMapper:
             if self._is_relationship_field(prop.python_name, metadata):
                 continue
 
-            # Skip ID property if it's auto-generated and None
-            if prop.is_id and prop.id_generator is not None:
+            # Skip ID property if it is internal FalkorDB ID (node metadata)
+            if prop.is_id and getattr(prop, "is_generated", False) and prop.id_generator is None:
+                continue
+
+            # Skip ID property if it has a custom generator but has no value yet
+            if (
+                prop.is_id
+                and getattr(prop, "is_generated", False)
+                and prop.id_generator is not None
+            ):
                 value = getattr(entity, prop.python_name, None)
                 if value is None:
                     continue
@@ -276,8 +284,13 @@ class EntityMapper:
                     )
 
                 kwargs[prop.python_name] = python_value
-            elif prop.is_id and internal_id is not None and hasattr(prop, "id_generator"):
-                # Use internal ID for auto-generated ID fields (fields created with generated_id())
+            elif (
+                prop.is_id
+                and internal_id is not None
+                and getattr(prop, "is_generated", False)
+                and prop.id_generator is None
+            ):
+                # Use internal ID for auto-generated ID fields (fields created with generated_id() with no custom generator)
                 kwargs[prop.python_name] = internal_id
             else:
                 # Set to None if not present

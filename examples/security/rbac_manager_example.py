@@ -61,9 +61,7 @@ def main():
     print("--- User Management ---")
 
     # Create users
-    alice = rbac.create_user(
-        username="alice", email="alice@example.com", roles=["reader"]
-    )
+    alice = rbac.create_user(username="alice", email="alice@example.com", roles=["reader"])
     print(f"✓ Created user: {alice.username}")
 
     bob = rbac.create_user(username="bob", email="bob@example.com", roles=["editor"])
@@ -90,9 +88,7 @@ def main():
     )
     print(f"✓ Created role: {analyst_role.name} (inherits from reader)")
 
-    reviewer_role = rbac.create_role(
-        name="reviewer", description="Can review documents"
-    )
+    reviewer_role = rbac.create_role(name="reviewer", description="Can review documents")
     print(f"✓ Created role: {reviewer_role.name}")
 
     # List roles

@@ -150,8 +150,13 @@ class AsyncEntityMapper:
                     )
 
                 kwargs[prop.python_name] = python_value
-            elif prop.is_id and internal_id is not None and prop.id_generator is not None:
-                # Use internal ID for auto-generated ID fields
+            elif (
+                prop.is_id
+                and internal_id is not None
+                and getattr(prop, "is_generated", False)
+                and prop.id_generator is None
+            ):
+                # Use internal ID for auto-generated ID fields (fields created with generated_id() with no custom generator)
                 kwargs[prop.python_name] = internal_id
             else:
                 # Set to None if not present
