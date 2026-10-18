@@ -507,5 +507,5 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 ## 📦 Resources
 
 - **FalkorDB**: [falkordb.com](https://falkordb.com)
-- **Discord**: [FalkorDB Community](https://discord.gg/falkordb)
+- **Discord**: [FalkorDB Community](https://discord.gg/6M4QwDXn2w)
 - **GitHub**: [FalkorDB Organization](https://github.com/FalkorDB)
