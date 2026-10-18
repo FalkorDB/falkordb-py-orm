@@ -280,7 +280,7 @@ Special thanks to:
 
 - **Documentation:** See completion guides in repository
 - **Issues:** [GitHub Issues](https://github.com/FalkorDB/falkordb-py-orm/issues)
-- **Discord:** [FalkorDB Community](https://discord.gg/falkordb)
+- **Discord:** [FalkorDB Community](https://discord.gg/6M4QwDXn2w)
 
 ## 📄 License
 
